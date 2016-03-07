@@ -113,6 +113,7 @@ bool StackAnalysis::analyze() {
 
    stackanalysis_printf("Finished stack analysis for function %s\n",
       func->name().c_str());
+
    return true;
 }
 
