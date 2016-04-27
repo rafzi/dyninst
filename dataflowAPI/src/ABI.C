@@ -423,8 +423,8 @@ void ABI::initialize32(){
 }
 
 void ABI::initialize64(){
-    returnRegs_ = getBitArray(machRegIndex_ppc_64().size());
-    returnRegs_[machRegIndex_ppc_64()[ppc64::r3]] = true;
+    returnRegs64_ = getBitArray(machRegIndex_ppc_64().size());
+    returnRegs64_[machRegIndex_ppc_64()[ppc64::r3]] = true;
 
     returnRead64_ = getBitArray(machRegIndex_ppc_64().size());
     // Return reads r3, r4, fpr1, fpr2
