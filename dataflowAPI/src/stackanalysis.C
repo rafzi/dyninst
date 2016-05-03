@@ -2202,6 +2202,7 @@ void StackAnalysis::TransferFunc::accumulate(
                // in this block.  Thus this term is TOP and doesn't affect the
                // value of the LEA, so we can ignore it.
                // FIXME if we change apply() to include constant propagation
+               anyToppedTerms = true;
                continue;
             }
             if (fromRegFunc.isTop()) {
