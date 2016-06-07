@@ -501,13 +501,13 @@ enum VEX_TYPE
             ((b & VEX_VVVV) >> 3))) & 0xF)
 
 #define VEXGET_L(b)     (char)((b & VEX_L) >> 2)
-#define VEXGET_R(b)     (char)((b & (1 << 7)) >> 7)
+#define VEXGET_R(b)     (((unsigned char)((~b & (1 << 7)) >> 7)) & 0x01)
 #define VEXGET_PP(b)    (char)(b & VEX_PP)
 
 #define VEX3GET_W(b)    (char)((b & VEX3_W) >> 7)
 #define VEX3GET_M(b)    (b & VEX3_M)
-#define VEX3GET_X(b)    (((unsigned char)(b) & (1 << 6)) >> 6)
-#define VEX3GET_B(b)    (((unsigned char)(b) & (1 << 5)) >> 5)
+#define VEX3GET_X(b)    (((unsigned char)(~b) & (unsigned char)(1 << 6)) >> 6)
+#define VEX3GET_B(b)    (((unsigned char)(~b) & (unsigned char)(1 << 5)) >> 5)
 #define VEX3GET_M(b)    (b & VEX3_M)
 
 /** EVEX masks */
@@ -585,10 +585,11 @@ COMMON_EXPORT bool ia32_is_mode_64();
 // added: am_reg, am_stack, am_allgprs
 // ADDED: am_ImplImm for implicit immediates
 // ADDED: am_RM, am_UM,
-enum { am_A=1, am_B, am_C, am_D, am_E, am_F, am_G, am_H, am_I, am_J, am_M, //10 
-    am_N, am_O, am_P, am_Q, am_R, am_S, am_T, am_XU, am_YU, am_U, am_UM, am_V, am_W, am_X, // 20
-    am_Y, am_reg, am_stackH, am_stackP, am_allgprs, am_tworeghack, am_ImplImm, am_RM,
-    am_HK, am_VK, am_WK, am_XH, am_XV, am_XW, am_YH, am_YV, am_YW }; // pusH and poP produce different addresses
+enum { am_A=1, am_B, am_C, am_D, am_E, am_F, am_G, am_H, am_I, am_J, // 1 -> 10
+	am_M, am_N, am_O, am_P, am_Q, am_R, am_S, am_T, am_XU, am_YU,  // 11 -> 20
+	am_U, am_UM, am_V, am_W, am_X, am_Y, am_reg, am_stackH, am_stackP, am_allgprs,
+	am_tworeghack, am_ImplImm, am_RM, am_HK, am_VK, am_WK, am_XH, am_XV, am_XW, am_YH, 
+	am_YV, am_YW }; // pusH and poP produce different addresses
 
 // operand types - idem, but I invented quite a few to make implicit operands explicit.
 // ADDED: op_y

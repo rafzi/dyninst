@@ -782,6 +782,10 @@ namespace Dyninst
                         regnum |= pref.vex_R << 4;
                         regnum |= pref.vex_r << 3;
                         break;
+                    case VEX_TYPE_VEX2:
+                    case VEX_TYPE_VEX3:
+                        regnum |= pref.vex_r << 3;
+                        break;
                     default:break;
                 }
                 break;
@@ -791,6 +795,10 @@ namespace Dyninst
                 switch(pref.vex_type)
                 {
                     case VEX_TYPE_EVEX:
+                        regnum |= pref.vex_x << 4;
+                        regnum |= pref.vex_b << 3;
+                        break;
+                    case VEX_TYPE_VEX3:
                         regnum |= pref.vex_x << 4;
                         regnum |= pref.vex_b << 3;
                         break;
@@ -1176,6 +1184,13 @@ namespace Dyninst
 				// Segment register in modrm reg field.
 				insn_to_complete->appendOperand(makeRegisterExpression(
 					IntelRegTable(m_Arch,b_segment,locs->modrm_reg)),
+					isRead, isWritten);
+				break;
+			case am_T:
+				// test register in modrm reg; should only be tr6/tr7, but we'll decode any of them
+				// NOTE: this only appears in deprecated opcodes
+				insn_to_complete->appendOperand(makeRegisterExpression(
+					IntelRegTable(m_Arch,b_tr,locs->modrm_reg)), 
 					isRead, isWritten);
 				break;
 
