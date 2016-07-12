@@ -1,0 +1,15 @@
+dyninst changes:
+
+Elf_X.C: Elf_X::Elf_X
+    isBigEndian uninitialized for archives
+Object-elf.C: Object::load_object
+    allow empty data section (bare metal apps)
+    
+    
+    
+How to add arch:
+dyn_regs.h
+    add arch to Architecture enum
+    define register set (code generation)
+Object-elf.C
+    getArch: add arch to switch

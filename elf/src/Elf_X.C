@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -101,7 +101,7 @@ Elf_X *Elf_X::newElf_X(char *mem_image, size_t mem_size, string name)
    auto i = elf_x_by_ptr.find(make_pair(name, mem_image));
    if (i != elf_x_by_ptr.end()) {
      Elf_X *ret = i->second;
-     
+
      ret->ref_count++;
      return ret;
    }
@@ -113,7 +113,7 @@ Elf_X *Elf_X::newElf_X(char *mem_image, size_t mem_size, string name)
 
 // ------------------------------------------------------------------------
 // Class Elf_X simulates the Elf(32|64)_Ehdr structure.
-// Also works for ELF archives. 
+// Also works for ELF archives.
 Elf_X::Elf_X()
     : elf(NULL), ehdr32(NULL), ehdr64(NULL), phdr32(NULL), phdr64(NULL),
       filedes(-1), is64(false), isArchive(false), ref_count(1),
@@ -135,22 +135,16 @@ Elf_X::Elf_X(int input, Elf_Cmd cmd, Elf_X *ref)
        elf = elf_begin(input, cmd, NULL);
     }
     if (elf) {
-       if (elf_kind(elf) == ELF_K_ELF) {
-          char *identp = elf_getident(elf, NULL);
-          is64 = (identp && identp[EI_CLASS] == ELFCLASS64);
-          isBigEndian = (identp && identp[EI_DATA] == ELFDATA2MSB);
-       }
-       else if(elf_kind(elf) == ELF_K_AR) {
-          char *identp = elf_getident(elf, NULL);
-          is64 = (identp && identp[EI_CLASS] == ELFCLASS64);
-          isArchive = true;
-       }
-       
-       if (!is64)  ehdr32 = elf32_getehdr(elf);
-       else       ehdr64 = elf64_getehdr(elf);
-       
-       if (!is64) phdr32 = elf32_getphdr(elf);
-       else       phdr64 = elf64_getphdr(elf);
+        char *identp = elf_getident(elf, NULL);
+        is64 = (identp && identp[EI_CLASS] == ELFCLASS64);
+        isBigEndian = (identp && identp[EI_DATA] == ELFDATA2MSB);
+        isArchive = elf_kind(elf) == ELF_K_AR;
+
+        if (!is64) ehdr32 = elf32_getehdr(elf);
+        else       ehdr64 = elf64_getehdr(elf);
+
+        if (!is64) phdr32 = elf32_getphdr(elf);
+        else       phdr64 = elf64_getphdr(elf);
     }
 
     if (elf_kind(elf) == ELF_K_ELF) {
@@ -177,21 +171,21 @@ Elf_X::Elf_X(char *mem_image, size_t mem_size)
 
     elf_errno(); // Reset elf_errno to zero.
     elf = elf_memory(mem_image, mem_size);
-    
+
     int err;
     if ( (err = elf_errno()) != 0) {
        //const char *msg = elf_errmsg(err);
     }
-    
+
     if (elf) {
        if (elf_kind(elf) == ELF_K_ELF) {
           char *identp = elf_getident(elf, NULL);
           is64 = (identp && identp[EI_CLASS] == ELFCLASS64);
        }
-       
+
        if (!is64) ehdr32 = elf32_getehdr(elf);
        else       ehdr64 = elf64_getehdr(elf);
-       
+
        if (!is64) phdr32 = elf32_getphdr(elf);
        else       phdr64 = elf64_getphdr(elf);
     }
@@ -1369,9 +1363,9 @@ Elf_X_Rel::Elf_X_Rel(bool is64_, Elf_Data *input)
     : data(input), rel32(NULL), rel64(NULL), is64(is64_)
 {
     if (input) {
-        if (!is64) 
+        if (!is64)
             rel32 = (Elf32_Rel *)data->d_buf;
-        else       
+        else
             rel64 = (Elf64_Rel *)data->d_buf;
     }
 }
@@ -1444,9 +1438,9 @@ Elf_X_Rela::Elf_X_Rela(bool is64_, Elf_Data *input)
     : data(input), rela32(NULL), rela64(NULL), is64(is64_)
 {
     if (input) {
-        if (!is64) 
+        if (!is64)
             rela32 = (Elf32_Rela *)data->d_buf;
-        else       
+        else
             rela64 = (Elf64_Rela *)data->d_buf;
     }
 }
@@ -1542,7 +1536,7 @@ Elf_X_Dyn::Elf_X_Dyn(bool is64_, Elf_Data *input)
 
 // Read Interface
 signed long Elf_X_Dyn::d_tag(int i) const
-{ 
+{
     return (!is64 ?
             static_cast<signed long>(dyn32[i].d_tag) :
             static_cast<signed long>(dyn64[i].d_tag));
@@ -1641,7 +1635,7 @@ bool Elf_X::findDebugFile(std::string origfilename, string &output_name, char* &
    if (!shnames_hdr.isValid())
       return false;
    const char *shnames = (const char *) shnames_hdr.get_data().d_buf();
-   
+
   string debugFileFromDebugLink, debugFileFromBuildID;
   unsigned debugFileCrc = 0;
 
@@ -1710,7 +1704,7 @@ bool Elf_X::findDebugFile(std::string origfilename, string &output_name, char* &
      bool result = loadDebugFileFromDisk(fnames[i], output_buffer, output_buffer_size);
      if (!result)
         continue;
-    
+
     boost::crc_32_type crcComputer;
     crcComputer.process_bytes(output_buffer, output_buffer_size);
     if(crcComputer.checksum() != debugFileCrc) {
