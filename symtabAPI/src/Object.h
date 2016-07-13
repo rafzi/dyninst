@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -78,10 +78,10 @@ const char MULTIPLE_WILDCARD_CHARACTER = '*';
 class AObject {
 public:
     SYMTAB_EXPORT unsigned nsymbols () const;
-    
+
     SYMTAB_EXPORT bool get_symbols( std::string & name, std::vector< Symbol *> & symbols);
 
-    SYMTAB_EXPORT char*       code_ptr () const; 
+    SYMTAB_EXPORT char*       code_ptr () const;
     SYMTAB_EXPORT Offset           code_off () const;
     SYMTAB_EXPORT Offset           code_len () const;
 
@@ -111,7 +111,7 @@ public:
 
     SYMTAB_EXPORT virtual  bool   needs_function_binding()  const;
     SYMTAB_EXPORT virtual  bool   get_func_binding_table(std::vector<relocationEntry> &) const;
-    SYMTAB_EXPORT virtual  bool   get_func_binding_table_ptr(const std::vector<relocationEntry> *&) const; 
+    SYMTAB_EXPORT virtual  bool   get_func_binding_table_ptr(const std::vector<relocationEntry> *&) const;
     SYMTAB_EXPORT virtual  bool   addRelocationEntry(relocationEntry &re);
     SYMTAB_EXPORT bool   getSegments(std::vector<Segment> &segs) const;
 
@@ -121,21 +121,21 @@ public:
 
     SYMTAB_EXPORT void * getErrFunc() const;
     SYMTAB_EXPORT dyn_hash_map< std::string, std::vector< Symbol *> > *getAllSymbols();
-    
+
     SYMTAB_EXPORT virtual bool hasFrameDebugInfo() {return false;}
     SYMTAB_EXPORT virtual bool getRegValueAtFrame(Address /*pc*/,
-                                                  Dyninst::MachRegister /*reg*/, 
+                                                  Dyninst::MachRegister /*reg*/,
                                                   Dyninst::MachRegisterVal & /*reg_result*/,
                                                   Dyninst::SymtabAPI::MemRegReader * /*reader*/) {return false;}
-    
-    SYMTAB_EXPORT virtual Dyninst::Architecture getArch() { return Arch_none; };
+
+    SYMTAB_EXPORT virtual Dyninst::Architecture getArch() const { return Arch_none; };
     SYMTAB_EXPORT const std::string findModuleForSym(Symbol *sym);
     SYMTAB_EXPORT void setModuleForOffset(Offset sym_off, std::string module);
     SYMTAB_EXPORT void clearSymsToMods();
     SYMTAB_EXPORT bool hasError() const;
     SYMTAB_EXPORT virtual bool isBigEndianDataEncoding() const { return false; }
     SYMTAB_EXPORT virtual bool getABIVersion(int & /*major*/, int & /*minor*/) const { return false; }
-    
+
     virtual void setTruncateLinePaths(bool value);
     virtual bool getTruncateLinePaths();
     virtual Region::RegionType getRelType() const { return Region::RT_INVALID; }
@@ -179,7 +179,7 @@ protected:
 //    Offset loadAddress_;
 //    Offset entryAddress_;
 //    Offset baseAddress_;
- 
+
     bool is_aout_;
     bool is_dynamic_;
     bool has_error;
@@ -191,12 +191,12 @@ protected:
 
     bool deferredParse;
     bool parsedAllLineInfo;
-    
+
     void (*err_func_)(const char*);
     int addressWidth_nbytes;
 
     std::vector<ExceptionBlock> catch_addrs_; //Addresses of C++ try/catch blocks;
-    
+
 private:
     friend class SymbolIter;
     friend class Symtab;
@@ -233,24 +233,24 @@ class SymbolIter {
    dyn_hash_map< std::string, std::vector< Symbol *> > *symbols;
    unsigned int currentPositionInVector;
    dyn_hash_map< std::string, std::vector< Symbol *> >::iterator symbolIterator;
-   
+
  public:
    SymbolIter( Object & obj );
    SymbolIter( const SymbolIter & src );
    ~SymbolIter ();
-   
+
    void reset ();
-   
+
    operator bool() const;
    void operator++ ( int );
    const std::string & currkey() const;
-   
+
    /* If it's important that this be const, we could try to initialize
       currentVector to '& symbolIterator.currval()' in the constructor. */
    Symbol *currval();
-   
- private:	
-   
+
+ private:
+
    SymbolIter & operator = ( const SymbolIter & ); // explicitly disallowed
 }; /* end class SymbolIter() */
 

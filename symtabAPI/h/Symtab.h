@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -67,7 +67,7 @@ class MappedFile;
 #define SYM_MAJOR DYNINST_MAJOR_VERSION
 #define SYM_MINOR DYNINST_MINOR_VERSION
 #define SYM_BETA  DYNINST_PATCH_VERSION
- 
+
 namespace Dyninst {
 
    struct SymSegment;
@@ -114,21 +114,21 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    Symtab();
 
    Symtab(const Symtab& obj);
-   Symtab(unsigned char *mem_image, size_t image_size, 
+   Symtab(unsigned char *mem_image, size_t image_size,
                         const std::string &name, bool defensive_binary, bool &err);
 
    typedef enum {
       NotDefensive,
-      Defensive} def_t; 
+      Defensive} def_t;
 
-   static bool openFile(Symtab *&obj, std::string filename, 
+   static bool openFile(Symtab *&obj, std::string filename,
                                       def_t defensive_binary = NotDefensive);
-   static bool openFile(Symtab *&obj, void *mem_image, size_t size, 
+   static bool openFile(Symtab *&obj, void *mem_image, size_t size,
                                       std::string name, def_t defensive_binary = NotDefensive);
    static Symtab *findOpenSymtab(std::string filename);
    static bool closeSymtab(Symtab *);
 
-   Serializable * serialize_impl(SerializerBase *sb, 
+   Serializable * serialize_impl(SerializerBase *sb,
 		   const char *tag = "Symtab") THROW_SPEC (SerializerError);
    void rebuild_symbol_hashes(SerializerBase *);
    void rebuild_funcvar_hashes(SerializerBase *);
@@ -140,8 +140,8 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    bool exportXML(std::string filename);
    bool exportBin(std::string filename);
    static Symtab *importBin(std::string filename);
-   bool getRegValueAtFrame(Address pc, 
-                                     Dyninst::MachRegister reg, 
+   bool getRegValueAtFrame(Address pc,
+                                     Dyninst::MachRegister reg,
                                      Dyninst::MachRegisterVal &reg_result,
                                      MemRegReader *reader);
    bool hasStackwalkDebugInfo();
@@ -152,16 +152,16 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
 
    // Symbol
 
-   virtual bool findSymbol(std::vector<Symbol *> &ret, 
+   virtual bool findSymbol(std::vector<Symbol *> &ret,
                                          const std::string& name,
                                          Symbol::SymbolType sType = Symbol::ST_UNKNOWN,
                                          NameType nameType = anyName,
-                                         bool isRegex = false, 
+                                         bool isRegex = false,
                                          bool checkCase = false,
                                          bool includeUndefined = false);
 
    virtual bool getAllSymbols(std::vector<Symbol *> &ret);
-   virtual bool getAllSymbolsByType(std::vector<Symbol *> &ret, 
+   virtual bool getAllSymbolsByType(std::vector<Symbol *> &ret,
          Symbol::SymbolType sType);
 
    std::vector<Symbol *> findSymbolByOffset(Offset);
@@ -177,7 +177,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
 
    bool findFuncByEntryOffset(Function *&ret, const Offset offset);
    bool findFunctionsByName(std::vector<Function *> &ret, const std::string name,
-                                          NameType nameType = anyName, 
+                                          NameType nameType = anyName,
                                           bool isRegex = false,
                                           bool checkCase = true);
    bool getAllFunctions(std::vector<Function *>&ret);
@@ -190,8 +190,8 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    // Variable
    bool findVariableByOffset(Variable *&ret, const Offset offset);
    bool findVariablesByName(std::vector<Variable *> &ret, const std::string name,
-                                          NameType nameType = anyName, 
-                                          bool isRegex = false, 
+                                          NameType nameType = anyName,
+                                          bool isRegex = false,
                                           bool checkCase = true);
    bool getAllVariables(std::vector<Variable *> &ret);
 
@@ -217,7 +217,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    // Exceptions
    bool findException(ExceptionBlock &excp,Offset addr);
    bool getAllExceptions(std::vector<ExceptionBlock *> &exceptions);
-   bool findCatchBlock(ExceptionBlock &excp, Offset addr, 
+   bool findCatchBlock(ExceptionBlock &excp, Offset addr,
          unsigned size = 0);
 
    // Relocation entries
@@ -241,7 +241,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    bool isExec() const;
    bool isStripped();
    ObjectType getObjectType() const;
-   Dyninst::Architecture getArchitecture();
+   Dyninst::Architecture getArchitecture() const;
    bool isCode(const Offset where) const;
    bool isData(const Offset where) const;
    bool isValidOffset(const Offset where) const;
@@ -252,9 +252,9 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    /***** Line Number Information *****/
    bool getAddressRanges(std::vector<std::pair<Offset, Offset> >&ranges,
          std::string lineSource, unsigned int LineNo);
-   bool getSourceLines(std::vector<Statement *> &lines, 
+   bool getSourceLines(std::vector<Statement *> &lines,
          Offset addressInRange);
-   bool getSourceLines(std::vector<LineNoTuple> &lines, 
+   bool getSourceLines(std::vector<LineNoTuple> &lines,
                                      Offset addressInRange);
    bool addLine(std::string lineSource, unsigned int lineNo,
          unsigned int lineOffset, Offset lowInclAddr,
@@ -264,7 +264,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    void setTruncateLinePaths(bool value);
    bool getTruncateLinePaths();
    void forceFullLineInfoParse();
-   
+
    /***** Type Information *****/
    virtual bool findType(Type *&type, std::string name);
    virtual Type *findType(unsigned type_id);
@@ -290,12 +290,12 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    bool hasReladyn() const;
    bool hasRelplt() const;
    bool hasRelaplt() const;
-   
+
    bool isStaticBinary() const;
 
    /***** Write Back binary functions *****/
    bool emitSymbols(Object *linkedFile, std::string filename, unsigned flag = 0);
-   bool addRegion(Offset vaddr, void *data, unsigned int dataSize, 
+   bool addRegion(Offset vaddr, void *data, unsigned int dataSize,
          std::string name, Region::RegionType rType_, bool loadable = false,
          unsigned long memAlign = sizeof(unsigned), bool tls = false);
    bool addRegion(Region *newreg);
@@ -305,7 +305,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    std::string getDynLibSubstitution(std::string name);
 
    bool getSegments(std::vector<Segment> &segs) const;
-   
+
    void fixup_code_and_data(Offset newImageOffset,
                                           Offset newImageLength,
                                           Offset newDataOffset,
@@ -357,7 +357,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    Offset getTOCoffset(Function *func = NULL) const;
    Offset getTOCoffset(Offset off) const;
    Address getLoadAddress();
-   bool isDefensiveBinary() const; 
+   bool isDefensiveBinary() const;
    Offset fileToDiskOffset(Dyninst::Offset) const;
    Offset fileToMemOffset(Dyninst::Offset) const;
 
@@ -379,7 +379,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    ~Symtab();
 
    bool delSymbol(Symbol *sym) { return deleteSymbol(sym); }
-   bool deleteSymbol(Symbol *sym); 
+   bool deleteSymbol(Symbol *sym);
 
    Symbol *getSymbolByIndex(unsigned);
 
@@ -411,10 +411,10 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
 
    void setModuleLanguages(dyn_hash_map<std::string, supportedLanguages> *mod_langs);
 
-   bool buildDemangledName( const std::string &mangled, 
+   bool buildDemangledName( const std::string &mangled,
          std::string &pretty,
          std::string &typed,
-         bool nativeCompiler, 
+         bool nativeCompiler,
          supportedLanguages lang );
 
    // Change the type of a symbol after the fact
@@ -433,7 +433,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
 
 
    bool canBeShared();
-   Module *getOrCreateModule(const std::string &modName, 
+   Module *getOrCreateModule(const std::string &modName,
                                            const Offset modAddr);
    bool parseFunctionRanges();
 
@@ -447,7 +447,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    void createDefaultModule();
 
    Module *newModule(const std::string &name, const Offset addr, supportedLanguages lang);
-   
+
    //bool buildFunctionLists(std::vector <Symbol *> &raw_funcs);
    //void enterFunctionInTables(Symbol *func, bool wasSymtab);
 
@@ -458,7 +458,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
 
 
    void parseLineInformation();
-   
+
    void parseTypes();
    bool setDefaultNamespacePrefix(std::string &str);
 
@@ -526,11 +526,11 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    struct mangled {};
    struct typed {};
    struct id {};
-   
- 
-   
-   
-   typedef 
+
+
+
+
+   typedef
    boost::multi_index_container<Symbol::Ptr, indexed_by <
    ordered_unique< tag<id>, const_mem_fun < Symbol::Ptr, Symbol*, &Symbol::Ptr::get> >,
    ordered_non_unique< tag<offset>, const_mem_fun < Symbol, Offset, &Symbol::getOffset > >,
@@ -539,10 +539,10 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
    hashed_non_unique< tag<typed>, const_mem_fun < Symbol, std::string, &Symbol::getTypedName > >
    >
    > indexed_symbols;
-   
+
    indexed_symbols everyDefinedSymbol;
    indexed_symbols undefDynSyms;
-   
+
    // We also need per-Aggregate indices
    bool sorted_everyFunction;
    std::vector<Function *> everyFunction;
@@ -596,7 +596,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
 
    //Don't use obj_private, use getObject() instead.
  public:
-   Object *getObject();
+   Object *getObject() const;
  private:
    Object *obj_private;
 
@@ -612,7 +612,7 @@ class SYMTAB_EXPORT Symtab : public LookupInterface,
 };
 
 /**
- * Used to represent something like a C++ try/catch block.  
+ * Used to represent something like a C++ try/catch block.
  * Currently only used on Linux/x86
  **/
 SYMTAB_EXPORT  std::ostream &operator<<(std::ostream &os, const ExceptionBlock &q);
@@ -621,7 +621,7 @@ class SYMTAB_EXPORT ExceptionBlock : public Serializable, public AnnotatableSpar
   // Accessors provide consistent access to the *original* offsets.
   // We allow this to be updated (e.g. to account for relocated code
    public:
-	  Serializable * serialize_impl(SerializerBase *sb, 
+	  Serializable * serialize_impl(SerializerBase *sb,
 			  const char *tag = "exceptionBlock") THROW_SPEC (SerializerError);
       ExceptionBlock(Offset tStart, unsigned tSize, Offset cStart);
       ExceptionBlock(Offset cStart);
@@ -635,7 +635,7 @@ class SYMTAB_EXPORT ExceptionBlock : public Serializable, public AnnotatableSpar
       Offset trySize() const;
       Offset catchStart() const;
       bool contains(Offset a) const;
-      void setTryStart(Offset ts) 
+      void setTryStart(Offset ts)
       {
 	tryStart_ptr = ts;
       }
@@ -653,11 +653,11 @@ class SYMTAB_EXPORT ExceptionBlock : public Serializable, public AnnotatableSpar
       {
 	fdeStart_ptr = fs;
       }
-      
+
       void setFdeEnd(Offset fe)
       {
 	fdeEnd_ptr = fe;
-      }      	
+      }
 
 
       friend SYMTAB_EXPORT std::ostream &operator<<(std::ostream &os, const ExceptionBlock &q);
@@ -680,17 +680,17 @@ class SYMTAB_EXPORT relocationEntry : public Serializable, public AnnotatableSpa
    public:
 
       relocationEntry();
-      relocationEntry(Offset ta, Offset ra, Offset add, 
+      relocationEntry(Offset ta, Offset ra, Offset add,
 			  std::string n, Symbol *dynref = NULL, unsigned long relType = 0);
-      relocationEntry(Offset ta, Offset ra, std::string n, 
+      relocationEntry(Offset ta, Offset ra, std::string n,
 			  Symbol *dynref = NULL, unsigned long relType = 0);
-      relocationEntry(Offset ra, std::string n, Symbol *dynref = NULL, 
+      relocationEntry(Offset ra, std::string n, Symbol *dynref = NULL,
 			  unsigned long relType = 0, Region::RegionType rtype = Region::RT_REL);
       relocationEntry(Offset ta, Offset ra, Offset add,
                           std::string n, Symbol *dynref = NULL, unsigned long relType = 0,
                           Region::RegionType rtype = Region::RT_REL);
 
-	  Serializable * serialize_impl(SerializerBase *sb, 
+	  Serializable * serialize_impl(SerializerBase *sb,
 			  const char *tag = "relocationEntry") THROW_SPEC (SerializerError);
 
       Offset target_addr() const;
@@ -722,8 +722,8 @@ class SYMTAB_EXPORT relocationEntry : public Serializable, public AnnotatableSpa
       static const char *relType2Str(unsigned long r, unsigned addressWidth = sizeof(Address));
 
    private:
-      Offset target_addr_;	// target address of call instruction 
-      Offset rel_addr_;		// address of corresponding relocation entry 
+      Offset target_addr_;	// target address of call instruction
+      Offset rel_addr_;		// address of corresponding relocation entry
       Offset addend_;       // addend (from RELA entries)
       Region::RegionType rtype_;        // RT_REL vs. RT_RELA
       std::string  name_;

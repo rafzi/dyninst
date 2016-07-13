@@ -2,7 +2,7 @@
 # Once done this will define
 #
 #  LIBELF_FOUND - system has libelf
-#  LIBELF_INCLUDE_DIRS - the libelf include directory
+#  LIBELF_INCLUDE_DIR - the libelf include directory
 #  LIBELF_LIBRARIES - Link these to use libelf
 #  LIBELF_DEFINITIONS - Compiler switches required for using libelf
 #
@@ -26,7 +26,7 @@ find_path (LIBELF_INCLUDE_DIR
       /usr/include
       /usr/include/libelf
       /usr/local/include
-      /usr/local/include/libelfls 
+      /usr/local/include/libelfls
       /opt/local/include
       /opt/local/include/libelf
       /sw/include

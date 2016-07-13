@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -60,7 +60,7 @@ SymtabReader::SymtabReader(const char *buffer, unsigned long size) :
 {
    stringstream memName;
    memName << "memory_" << (unsigned long)(buffer) << "_" << size;
-   Symtab::openFile(symtab, const_cast<char *>(buffer), 
+   Symtab::openFile(symtab, const_cast<char *>(buffer),
                     size, memName.str());
 }
 
@@ -128,7 +128,7 @@ unsigned SymtabReader::getAddressWidth()
    assert(symtab);
    return symtab->getAddressWidth();
 }
-   
+
 bool SymtabReader::getABIVersion(int &major, int &minor) const
 {
    assert(symtab);
@@ -139,6 +139,11 @@ bool SymtabReader::isBigEndianDataEncoding() const
 {
    assert(symtab);
    return symtab->isBigEndianDataEncoding();
+}
+
+Architecture SymtabReader::getArchitecture() const
+{
+    return symtab->getArchitecture();
 }
 
 unsigned SymtabReader::numSegments()
@@ -159,8 +164,8 @@ bool SymtabReader::getSegment(unsigned num, SymSegment &seg)
 void SymtabReader::buildSegments() {
    if (!segments.empty()) return;
 
-   // We want ELF segments; contiguous areas of the 
-   // binary loaded into memory. 
+   // We want ELF segments; contiguous areas of the
+   // binary loaded into memory.
    symtab->getSegmentsSymReader(segments);
 }
 
@@ -281,7 +286,7 @@ SymReader *SymtabReaderFactory::openSymbolReader(std::string pathname)
       return symtabreader;
    }
    SymtabReader *symtabreader = new SymtabReader(pathname);
-   if (!symtabreader) { 
+   if (!symtabreader) {
       return NULL;
    }
    if(!symtabreader->symtab) {
@@ -296,7 +301,7 @@ SymReader *SymtabReaderFactory::openSymbolReader(std::string pathname)
 SymReader *SymtabReaderFactory::openSymbolReader(const char *buffer, unsigned long size)
 {
    SymtabReader *symtabreader = new SymtabReader(buffer, size);
-   if (!symtabreader) 
+   if (!symtabreader)
       return NULL;
    return symtabreader;
 }
@@ -307,8 +312,8 @@ bool SymtabReaderFactory::closeSymbolReader(SymReader *sr)
    assert(symreader->ref_count >= 1);
    symreader->ref_count--;
    if (symreader->ref_count == 0) {
-     // We need to remove this from the big map, but we don't 
-     // store the path. So crawl and look. 
+     // We need to remove this from the big map, but we don't
+     // store the path. So crawl and look.
      std::queue<std::string> toDelete;
      std::map<std::string, SymReader *>::iterator i;
      for (i = open_syms.begin(); i != open_syms.end(); ++i) {

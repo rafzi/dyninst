@@ -20,7 +20,7 @@ if (UNIX)
 
   add_library(libelf_imp SHARED IMPORTED)
   set_property(TARGET libelf_imp
-    PROPERTY IMPORTED_LOCATION ${LIBELF_LIBRARIES}) 
+    PROPERTY IMPORTED_LOCATION ${LIBELF_LIBRARIES})
 
   find_package (LibDwarf)
 
@@ -51,7 +51,7 @@ if (UNIX)
   endif()
 
   add_library(libdwarf_imp SHARED IMPORTED)
-  set_property(TARGET libdwarf_imp 
+  set_property(TARGET libdwarf_imp
     PROPERTY IMPORTED_LOCATION ${LIBDWARF_LIBRARIES})
 
   if (NOT USE_GNU_DEMANGLER)
@@ -69,6 +69,7 @@ if (UNIX)
 	INSTALL_COMMAND install <BINARY_DIR>/libiberty.a <INSTALL_DIR>
 	)
       set(IBERTY_LIBRARIES ${CMAKE_BINARY_DIR}/libiberty/libiberty.a)
+      set(IBERTY_FOUND TRUE)
     endif()
 
     message(STATUS "Using libiberty ${IBERTY_LIBRARIES}")
@@ -119,8 +120,8 @@ endif()
 # the thread library
 #set (BOOST_MIN_VERSION 1.41.0)
 
-if(DEFINED PATH_BOOST OR 
-	   DEFINED Boost_INCLUDE_DIR OR 
+if(DEFINED PATH_BOOST OR
+	   DEFINED Boost_INCLUDE_DIR OR
 	   DEFINED Boost_LIBRARY_DIR)
   set(Boost_NO_SYSTEM_PATHS ON)
 endif()

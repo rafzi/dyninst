@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -82,7 +82,7 @@ namespace SymtabAPI{
 // These are not declared in any system header files, so we must provide our own
 // declarations. The declarations below were taken from:
 //       SPARCWorks 3.0.x Debugger Interface, July 1994
-// 
+//
 struct stab32 {
     unsigned int name;  // stabstr table index for this symbol
     unsigned char type; // type of this symbol
@@ -106,9 +106,9 @@ struct stab64 {
 			// be obtained from the symtab section
 };
 
-// 
+//
 // Extended to a class for 32/64-bit stab entries at runtime. - Ray
-// 
+//
 class stab_entry {
   public:
     stab_entry(void *_stabptr = 0, const char *_stabstr = 0, long _nsyms = 0)
@@ -138,41 +138,41 @@ class stab_entry_32 : public stab_entry {
 	: stab_entry(_stabptr, _stabstr, _nsyms) { }
     virtual ~stab_entry_32() {};
 
-    const char *name(int i = 0) { 
+    const char *name(int i = 0) {
        if (!stabptr) {
           return "bad_name";
        }
-       return stabstr + ((stab32 *)stabptr)[i].name; 
+       return stabstr + ((stab32 *)stabptr)[i].name;
     }
     unsigned long nameIdx(int i = 0) {
        if (!stabptr) {
           return 0L;
        }
-       return ((stab32 *)stabptr)[i].name; 
+       return ((stab32 *)stabptr)[i].name;
     }
     unsigned char type(int i = 0) {
        if (!stabptr) {
           return 0;
        }
-       return ((stab32 *)stabptr)[i].type; 
+       return ((stab32 *)stabptr)[i].type;
     }
     unsigned char other(int i = 0) {
        if (!stabptr) {
           return 0;
        }
-       return ((stab32 *)stabptr)[i].other; 
+       return ((stab32 *)stabptr)[i].other;
     }
-    unsigned short desc(int i = 0) { 
+    unsigned short desc(int i = 0) {
        if (!stabptr) {
           return 0;
        }
-       return ((stab32 *)stabptr)[i].desc; 
+       return ((stab32 *)stabptr)[i].desc;
     }
-    unsigned long val(int i = 0) { 
+    unsigned long val(int i = 0) {
        if (!stabptr) {
           return 0L;
        }
-       return ((stab32 *)stabptr)[i].val; 
+       return ((stab32 *)stabptr)[i].val;
     }
 };
 
@@ -182,45 +182,45 @@ class stab_entry_64 : public stab_entry {
 	: stab_entry(_stabptr, _stabstr, _nsyms) { }
     virtual ~stab_entry_64() {};
 
-    const char *name(int i = 0) { 
+    const char *name(int i = 0) {
        if (!stabptr) {
           return "bad_name";
        }
-       return stabstr + ((stab64 *)stabptr)[i].name; 
+       return stabstr + ((stab64 *)stabptr)[i].name;
     }
     unsigned long nameIdx(int i = 0) {
        if (!stabptr) {
           return 0L;
        }
-       return ((stab64 *)stabptr)[i].name; 
+       return ((stab64 *)stabptr)[i].name;
     }
     unsigned char type(int i = 0) {
        if (!stabptr) {
           return 0;
        }
-       return ((stab64 *)stabptr)[i].type; 
+       return ((stab64 *)stabptr)[i].type;
     }
-    unsigned char other(int i = 0) { 
+    unsigned char other(int i = 0) {
        if (!stabptr) {
           return 0;
        }
-       return ((stab64 *)stabptr)[i].other; 
+       return ((stab64 *)stabptr)[i].other;
     }
-    unsigned short desc(int i = 0) { 
+    unsigned short desc(int i = 0) {
        if (!stabptr) {
           return 0;
        }
-       return ((stab64 *)stabptr)[i].desc; 
+       return ((stab64 *)stabptr)[i].desc;
     }
-    unsigned long val(int i = 0) { 
+    unsigned long val(int i = 0) {
        if (!stabptr) {
           return 0L;
        }
-       return ((stab64 *)stabptr)[i].val; 
+       return ((stab64 *)stabptr)[i].val;
     }
 };
 
-// Types 
+// Types
 #define N_UNDF  0x00 /* start of object file */
 #define N_GSYM  0x20 /* global symbol */
 #define N_FUN   0x24 /* function or procedure */
@@ -271,8 +271,8 @@ class Object;
   Object(MappedFile *, bool, void (*)(const char *) = log_msg, bool alloc_syms = true);
   virtual ~Object();
 
-  bool emitDriver(Symtab *obj, std::string fName, std::vector<Symbol *>&allSymbols, unsigned flag);  
-  
+  bool emitDriver(Symtab *obj, std::string fName, std::vector<Symbol *>&allSymbols, unsigned flag);
+
   const char *elf_vaddr_to_ptr(Offset vaddr) const;
   bool hasStabInfo() const { return ! ( !stab_off_ || !stab_size_ || !stabstr_off_ ); }
   bool hasDwarfInfo() const { return dwarvenDebugInfo; }
@@ -280,10 +280,10 @@ class Object;
   std::string getFileName() const;
   void getModuleLanguageInfo(dyn_hash_map<std::string, supportedLanguages> *mod_langs);
   void parseFileLineInfo(Symtab *obj);
-  
+
   void parseTypeInfo(Symtab *obj);
 
-  bool needs_function_binding() const { return (plt_addr_ > 0); } 
+  bool needs_function_binding() const { return (plt_addr_ > 0); }
   bool get_func_binding_table(std::vector<relocationEntry> &fbt) const;
   bool get_func_binding_table_ptr(const std::vector<relocationEntry> *&fbt) const;
   void getDependencies(std::vector<std::string> &deps);
@@ -302,8 +302,8 @@ class Object;
   void insertPrereqLibrary(std::string libname);
   bool removePrereqLibrary(std::string libname);
   void insertDynamicEntry(long name, long value);
- 
-  virtual char *mem_image() const 
+
+  virtual char *mem_image() const
   {
      assert(mf);
      return (char *)mf->base_addr();
@@ -313,14 +313,14 @@ class Object;
   const char *interpreter_name() const;
 
 
-  // On most platforms, the TOC offset doesn't exist and is thus null. 
+  // On most platforms, the TOC offset doesn't exist and is thus null.
   // On PPC64, it varies _by function_ and is used to point into the GOT,
   // a big data table. We can look it up by parsing the OPD, a function
-  // descriptor table. 
+  // descriptor table.
   Offset getTOCoffset(Offset off) const;
 
-  // This is an override for the whole thing; we could do per-function but 
-  // we're missing a _lot_ of hardware for that. 
+  // This is an override for the whole thing; we could do per-function but
+  // we're missing a _lot_ of hardware for that.
   void setTOCoffset(Offset off);
 
   const std::ostream &dump_state_info(std::ostream &s);
@@ -328,14 +328,14 @@ class Object;
 
 	//to determine if a mutation falls in the text section of
 	// a shared library
-	bool isinText(Offset addr, Offset baseaddr) const { 
+	bool isinText(Offset addr, Offset baseaddr) const {
 		if(addr > text_addr_ + baseaddr     &&
 		   addr < text_addr_ + baseaddr + text_size_ ) {
 			return true;
 		}
 		return false;
-	} 
-	// to determine where in the .plt this function is listed 
+	}
+	// to determine where in the .plt this function is listed
 	// returns an offset from the base address of the object
 	// so the entry can easily be located in memory
 	Offset getPltSlot(std::string funcName) const ;
@@ -347,7 +347,7 @@ class Object;
 	    return false;
 	}
 
-   Dyninst::Architecture getArch();
+   Dyninst::Architecture getArch() const;
    bool isBigEndianDataEncoding() const;
    bool getABIVersion(int &major, int &minor) const;
 	bool is_offset_in_plt(Offset offset) const;
@@ -356,12 +356,12 @@ class Object;
     Elf_X_Shdr *getRegionHdrByIndex(unsigned index);
     bool isRegionPresent(Offset segmentStart, Offset segmentSize, unsigned newPerms);
 
-    bool getRegValueAtFrame(Address pc, 
-                            Dyninst::MachRegister reg, 
+    bool getRegValueAtFrame(Address pc,
+                            Dyninst::MachRegister reg,
                             Dyninst::MachRegisterVal &reg_result,
                             MemRegReader *reader);
     bool hasFrameDebugInfo();
-    
+
     bool convertDebugOffset(Offset off, Offset &new_off);
 
     std::vector< std::vector<Offset> > getMoveSecAddrRange() const {return moveSecAddrRange;};
@@ -396,20 +396,20 @@ class Object;
 
     virtual void setTruncateLinePaths(bool value);
     virtual bool getTruncateLinePaths();
-    
+
     Elf_X * getElfHandle() { return elfHdr; }
 
     unsigned gotSize() const { return got_size_; }
     Offset gotAddr() const { return got_addr_; }
 
-    SYMTAB_EXPORT virtual void getSegmentsSymReader(std::vector<SymSegment> &segs); 
+    SYMTAB_EXPORT virtual void getSegmentsSymReader(std::vector<SymSegment> &segs);
 
     private:
     std::vector<std::vector<boost::shared_ptr<void> > > freeList;
   static void log_elferror (void (*)(const char *), const char *);
-    
+
   Elf_X *elfHdr;
- 
+
   std::vector< std::vector<Offset> > moveSecAddrRange;
   dyn_hash_map<Offset, int> secAddrTagMapping;
   dyn_hash_map<int, unsigned long> secTagSizeMapping;
@@ -425,15 +425,15 @@ class Object;
   bool isBlueGeneQ_;
   bool hasNoteSection_;
 
-  Offset   elf_hash_addr_; 	 //.hash section 
-  Offset   gnu_hash_addr_; 	 //.gnu.hash section 
+  Offset   elf_hash_addr_; 	 //.hash section
+  Offset   gnu_hash_addr_; 	 //.gnu.hash section
 
   Offset   dynamic_offset_;
   size_t   dynamic_size_;
   size_t   dynsym_size_;
   Offset   init_addr_;
   Offset   fini_addr_;
-  Offset   text_addr_; 	 //.text section 
+  Offset   text_addr_; 	 //.text section
   Offset   text_size_; 	 //.text section size
   Offset   symtab_addr_;
   Offset   strtab_addr_;
@@ -483,8 +483,8 @@ class Object;
   // for x86-solaris this is a table of GOT entry addr, function_name
   // on sparc-solaris the runtime linker modifies the PLT entry when it
   // binds a function, on X86 the PLT entry is not modified, but it uses
-  // an indirect jump to a GOT entry that is modified when the function 
-  // is bound....is this correct???? or should it be <PLTentry_addr, name> 
+  // an indirect jump to a GOT entry that is modified when the function
+  // is bound....is this correct???? or should it be <PLTentry_addr, name>
   // for both?
   std::vector<relocationEntry> relocation_table_;
   std::vector<relocationEntry> fbt_;
@@ -503,16 +503,16 @@ class Object;
 
   bool loaded_elf( Offset &, Offset &,
   		    Elf_X_Shdr* &,
-		    Elf_X_Shdr* &, Elf_X_Shdr* &, 
-		    Elf_X_Shdr* &, Elf_X_Shdr* &, 
-		    Elf_X_Shdr* &, Elf_X_Shdr* &, 
-		    Elf_X_Shdr*& rel_plt_scnp, Elf_X_Shdr*& plt_scnp, 
+		    Elf_X_Shdr* &, Elf_X_Shdr* &,
+		    Elf_X_Shdr* &, Elf_X_Shdr* &,
+		    Elf_X_Shdr* &, Elf_X_Shdr* &,
+		    Elf_X_Shdr*& rel_plt_scnp, Elf_X_Shdr*& plt_scnp,
 		    Elf_X_Shdr*& got_scnp, Elf_X_Shdr*& dynsym_scnp,
 		    Elf_X_Shdr*& dynstr_scnp, Elf_X_Shdr*& dynamic_scnp, Elf_X_Shdr*& eh_frame,
 		    Elf_X_Shdr*& gcc_except, Elf_X_Shdr *& interp_scnp,
 		   Elf_X_Shdr *&opd_scnp,
           bool a_out=false);
-  
+
   Symbol *handle_opd_symbol(Region *opd, Symbol *sym);
   void handle_opd_relocations();
   void parse_opd(Elf_X_Shdr *);
@@ -520,12 +520,12 @@ class Object;
  public:
   void parseDwarfFileLineInfo(Symtab* obj);
   void parseLineInfoForAddr(Symtab* obj, Offset addr_to_find);
-  
+
  private:
             bool addrInCU(Dwarf_Debug dbg, Dwarf_Die cu, Address to_find);
   void parseLineInfoForCU(Dwarf_Die cuDIE, LineInformation* li);
-  
-  
+
+
   void createLineInfoForModules(dyn_hash_map<std::string, LineInformation> &li);
   void parseDwarfTypes(Symtab *obj);
   void parseStabTypes(Symtab *obj);
@@ -533,9 +533,9 @@ class Object;
   void load_object(bool);
   void load_shared_object(bool);
 
-  // initialize relocation_table_ from .rel[a].plt section entries 
+  // initialize relocation_table_ from .rel[a].plt section entries
   bool get_relocation_entries(Elf_X_Shdr *&rel_plt_scnp,
-			      Elf_X_Shdr *&dynsym_scnp, 
+			      Elf_X_Shdr *&dynsym_scnp,
 			      Elf_X_Shdr *&dynstr_scnp);
 
   bool get_relocationDyn_entries( unsigned rel_index,
@@ -546,16 +546,16 @@ class Object;
   // existing symbols
   bool parse_all_relocations(Elf_X &, Elf_X_Shdr *, Elf_X_Shdr *,
           Elf_X_Shdr *, Elf_X_Shdr *);
-  
-  void parseDynamic(Elf_X_Shdr *& dyn_scnp, Elf_X_Shdr *&dynsym_scnp, 
+
+  void parseDynamic(Elf_X_Shdr *& dyn_scnp, Elf_X_Shdr *&dynsym_scnp,
                     Elf_X_Shdr *&dynstr_scnp);
-  
+
   bool parse_symbols(Elf_X_Data &symdata, Elf_X_Data &strdata,
                      Elf_X_Shdr* bssscnp,
                      Elf_X_Shdr* symscnp,
                      bool shared_library,
                      std::string module);
-  
+
   void parse_dynamicSymbols( Elf_X_Shdr *& dyn_scnp, Elf_X_Data &symdata,
                              Elf_X_Data &strdata, bool shared_library,
                              std::string module);
@@ -590,12 +590,12 @@ class Object;
   bool DbgSectionMapSorted;
   std::vector<DbgAddrConversion_t> DebugSectionMap;
 
- public:  
+ public:
   std::set<std::string> prereq_libs;
   std::vector<std::pair<long, long> > new_dynamic_entries;
  private:
   const char* soname_;
-  
+
 };
 
 }//namespace SymtabAPI

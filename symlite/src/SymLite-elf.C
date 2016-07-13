@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -34,7 +34,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <assert.h>
-#include <iostream> 
+#include <iostream>
 
 using namespace std;
 using namespace Dyninst;
@@ -120,7 +120,7 @@ void SymElf::init()
       Elf_X_Shdr strshdr = elf->get_shdr(stridx);
       Elf_X_Data strdata = strshdr.get_data();
       const char *names = (const char *) strdata.d_buf();
-      
+
       for (unsigned i=0; i < elf->e_shnum(); i++) {
          Elf_X_Shdr &shdr = elf->get_shdr(i);
          if (strcmp(names + shdr.sh_name(), ".opd") != 0)
@@ -164,7 +164,7 @@ void SymElf::init()
    unsigned idx = (unsigned) sym.i1; \
    Elf_X_Data sym_data = shdr.get_data(); \
    Elf_X_Sym symbols = sym_data.get_sym();
-   
+
 #define GET_INVALID_SYMBOL(sym) \
    sym.v1 = sym.v2 = NULL; \
    sym.i1 = 0; sym.i2 = INVALID_SYM_CODE;
@@ -172,14 +172,14 @@ void SymElf::init()
 Symbol_t SymElf::getSymbolByName(std::string symname)
 {
    Symbol_t ret;
-   for (unsigned i=0; i < elf->e_shnum(); i++) 
+   for (unsigned i=0; i < elf->e_shnum(); i++)
    {
       Elf_X_Shdr shdr = elf->get_shdr(i);
       if (shdr.sh_type() != SHT_SYMTAB && shdr.sh_type() != SHT_DYNSYM) {
          continue;
-      } 
+      }
 
-      FOR_EACH_SYMBOL(shdr, symbol, str_buffer, idx) 
+      FOR_EACH_SYMBOL(shdr, symbol, str_buffer, idx)
       {
          unsigned str_loc = symbol.st_name(idx);
          if (strcmp(str_buffer+str_loc, symname.c_str()) != 0)
@@ -209,14 +209,14 @@ Symbol_t SymElf::getContainingSymbol(Dyninst::Offset offset)
    bool has_nearest = false;
    Symbol_t nearest_sym;
 
-   for (unsigned i=0; i < elf->e_shnum(); i++) 
+   for (unsigned i=0; i < elf->e_shnum(); i++)
    {
       Elf_X_Shdr shdr = elf->get_shdr(i);
       if (shdr.sh_type() != SHT_SYMTAB && shdr.sh_type() != SHT_DYNSYM) {
          continue;
-      } 
+      }
 
-      FOR_EACH_SYMBOL(shdr, symbol, str_buffer, idx) 
+      FOR_EACH_SYMBOL(shdr, symbol, str_buffer, idx)
       {
          Dyninst::Offset sym_offset = getSymOffset(symbol, idx);
          if (sym_offset <= offset && (!has_nearest || sym_offset > nearest)) {
@@ -243,7 +243,7 @@ std::string SymElf::getInterpreterName()
       if (phdr.p_type() != PT_INTERP)
          continue;
       Dyninst::Offset off = (Dyninst::Offset) phdr.p_offset();
-      
+
       if (fd != -1) {
          char interp_buffer[4096];
          ssize_t result;
@@ -309,6 +309,11 @@ bool SymElf::getABIVersion(int &major, int &minor) const
 bool SymElf::isBigEndianDataEncoding() const
 {
    return (elf->e_endian() != 0);
+}
+
+Architecture SymElf::getArchitecture() const
+{
+    return elf->getArch();
 }
 
 unsigned long SymElf::getSymbolSize(const Symbol_t &sym)
@@ -391,7 +396,7 @@ unsigned long SymElf::getSymOffset(const Elf_X_Sym &symbol, unsigned idx)
       unsigned long odp_addr = odp_section->sh_addr();
       unsigned long odp_size = odp_section->sh_size();
       const char *odp_data = (const char *) odp_section->get_data().d_buf();
-      
+
       unsigned long sym_offset = symbol.st_value(idx);
       while (sym_offset >= odp_addr && sym_offset < odp_addr + odp_size)
          sym_offset = *((const unsigned long *) (odp_data + sym_offset - odp_addr));
@@ -409,7 +414,7 @@ unsigned long SymElf::getSymTOC(const Elf_X_Sym &symbol, unsigned idx)
       const char *odp_data = (const char *) odp_section->get_data().d_buf();
       unsigned long sym_offset = symbol.st_value(idx);
 
-      if (sym_offset < odp_addr || (sym_offset >= odp_addr + odp_size)) 
+      if (sym_offset < odp_addr || (sym_offset >= odp_addr + odp_size))
          return 0;
 
       unsigned long toc = *((const unsigned long *) (odp_data + (sym_offset - odp_addr + sizeof(long))));
@@ -422,13 +427,13 @@ unsigned long SymElf::getSymTOC(const Elf_X_Sym &symbol, unsigned idx)
 void SymElf::createSymCache()
 {
    unsigned long sym_count = 0, cur_sym = 0, cur_sec = 0;
-   
+
    if (!cache && sym_sections)
       return;
 
    assert(!cache);
    assert(!sym_sections);
-   for (unsigned i=0; i < elf->e_shnum(); i++) 
+   for (unsigned i=0; i < elf->e_shnum(); i++)
    {
       Elf_X_Shdr shdr = elf->get_shdr(i);
       if (shdr.sh_type() != SHT_SYMTAB && shdr.sh_type() != SHT_DYNSYM) {
@@ -443,8 +448,8 @@ void SymElf::createSymCache()
    sym_sections = (Elf_X_Shdr *) malloc(sym_sections_size * sizeof(Elf_X_Shdr));
    if (sym_count)
       cache = (SymCacheEntry *) malloc(sym_count * sizeof(SymCacheEntry));
-   
-   for (unsigned i=0; i < elf->e_shnum(); i++) 
+
+   for (unsigned i=0; i < elf->e_shnum(); i++)
    {
       Elf_X_Shdr shdr = elf->get_shdr(i);
       if (shdr.sh_type() != SHT_SYMTAB && shdr.sh_type() != SHT_DYNSYM) {
@@ -481,7 +486,7 @@ Symbol_t SymElf::lookupCachedSymbol(Dyninst::Offset off)
    unsigned max = cache_size;
    unsigned cur = cache_size / 2;
    Symbol_t ret;
-   
+
    if (!cache) {
       ret.i2 = INVALID_SYM_CODE;
       return ret;
@@ -507,7 +512,7 @@ Symbol_t SymElf::lookupCachedSymbol(Dyninst::Offset off)
    for (unsigned i=0; i<sym_sections_size; i++) {
       Elf_X_Shdr &shdr = sym_sections[i];
       Elf_X_Data data = shdr.get_data();
-      
+
       void *data_start = data.d_buf();
       signed long sym_offset = ((unsigned char *) sym_ptr) - ((unsigned char *) data_start);
       if (sym_offset < 0 || sym_offset >= (signed long) data.d_size())
@@ -516,14 +521,14 @@ Symbol_t SymElf::lookupCachedSymbol(Dyninst::Offset off)
       //Calculate symbol index
       Elf_X_Sym syms = data.get_sym();
       unsigned sym_idx = sym_offset / syms.st_entsize();
-      
+
       //Lookup symbol name
       unsigned int str_index = shdr.sh_link();
       Elf_X_Shdr str_shdr = elf->get_shdr(str_index);
       Elf_X_Data str_data = str_shdr.get_data();
       const char *str_buffer = (const char *) str_data.d_buf();
       const char *name = str_buffer + syms.st_name(sym_idx);
-      
+
       MAKE_SYMBOL(name, sym_idx, shdr, ret);
       SET_SYM_CACHEINDEX(ret, cur);
       return ret;
@@ -542,7 +547,7 @@ Section_t SymElf::getSectionByName(std::string name)
    Section_t ret;
    ret.i1 = -1;
 
-   for (unsigned i=0; i < elf->e_shnum(); i++) 
+   for (unsigned i=0; i < elf->e_shnum(); i++)
    {
       Elf_X_Shdr shdr = elf->get_shdr(i);
       const char *sname = names + shdr.sh_name();
@@ -551,7 +556,7 @@ Section_t SymElf::getSectionByName(std::string name)
          break;
       }
    }
-   
+
    return ret;
 }
 
@@ -560,7 +565,7 @@ Section_t SymElf::getSectionByAddress(Dyninst::Address addr)
    Section_t ret;
    ret.i1 = -1;
 
-   for (unsigned i=0; i < elf->e_shnum(); i++) 
+   for (unsigned i=0; i < elf->e_shnum(); i++)
    {
       Elf_X_Shdr shdr = elf->get_shdr(i);
       Dyninst::Address mem_start = shdr.sh_addr();
@@ -577,7 +582,7 @@ Dyninst::Address SymElf::getSectionAddress(Section_t sec)
 {
    assert(isValidSection(sec));
    Elf_X_Shdr shdr = elf->get_shdr(sec.i1);
-   
+
    return shdr.sh_addr();
 }
 
@@ -599,14 +604,14 @@ bool SymElf::isValidSection(Section_t sec)
    return (sec.i1 != -1);
 }
 
-Dyninst::Offset SymElf::imageOffset() 
-{ 
+Dyninst::Offset SymElf::imageOffset()
+{
    assert(0); return 0;
 };
 
-Dyninst::Offset SymElf::dataOffset() 
-{ 
-   assert(0); return 0; 
+Dyninst::Offset SymElf::dataOffset()
+{
+   assert(0); return 0;
 }
 
 void *SymElf::getElfHandle() {
@@ -678,5 +683,5 @@ bool SymElfFactory::closeSymbolReader(SymReader *sr)
 int SymElf::getFD()
 {
   return fd;
-  
+
 }

@@ -4,12 +4,16 @@ Elf_X.C: Elf_X::Elf_X
     isBigEndian uninitialized for archives
 Object-elf.C: Object::load_object
     allow empty data section (bare metal apps)
-    
-    
-    
+Elf_X.h/c Symtab.h/c Object-elf.h/c SymLite-elf.h/c SymLiteCodeSource.h/c SymtabReader.h/c SymReader.h SymtabCodeSource.c Object.h
+    base all getArch()/getArchitecture() funcs on facts from the ELF, instead of the host arch
+
+
+
 How to add arch:
 dyn_regs.h
     add arch to Architecture enum
     define register set (code generation)
 Object-elf.C
     getArch: add arch to switch
+ABI.C
+    add platform abi. probably good to rewrite and decide based on image. would allow for microsoft <-> system v distinction
