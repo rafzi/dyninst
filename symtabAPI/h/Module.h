@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -30,7 +30,7 @@
 
 #ifndef __MODULE__H__
 #define __MODULE__H__
- 
+
 #include "symutil.h"
 #include "Symbol.h"
 
@@ -62,7 +62,7 @@ class SYMTAB_EXPORT Statement : public AnnotatableSparse, public Serializable
       column(col)
       {
       }
-	
+
 	std::string file_; // Maybe this should be module?
 	unsigned int line_;
 	Offset start_addr_;
@@ -73,7 +73,7 @@ class SYMTAB_EXPORT Statement : public AnnotatableSparse, public Serializable
 	unsigned int second;
 	unsigned int column;
 
-	Statement() : first(NULL), second(line_) {}
+	Statement() : line_(0), first(NULL), second(line_) {}
 	struct StatementLess {
 		bool operator () ( const Statement &lhs, const Statement &rhs ) const;
 	};
@@ -128,14 +128,14 @@ typedef Statement LineNoTuple;
 	~Module();
 
 	// Symbol output methods
-	virtual bool findSymbol(std::vector<Symbol *> &ret, 
+	virtual bool findSymbol(std::vector<Symbol *> &ret,
                                               const std::string& name,
-                                              Symbol::SymbolType sType = Symbol::ST_UNKNOWN, 
+                                              Symbol::SymbolType sType = Symbol::ST_UNKNOWN,
                                               NameType nameType = anyName,
-                                              bool isRegex = false, 
+                                              bool isRegex = false,
                                               bool checkCase = false,
                                               bool includeUndefined = false);
-	virtual bool getAllSymbolsByType(std::vector<Symbol *> &ret, 
+	virtual bool getAllSymbolsByType(std::vector<Symbol *> &ret,
 			Symbol::SymbolType sType);
 	virtual bool getAllSymbols(std::vector<Symbol *> &ret);
 
@@ -144,15 +144,15 @@ typedef Statement LineNoTuple;
 	bool getAllFunctions(std::vector<Function *>&ret);
 	bool findFunctionByEntryOffset(Function *&ret, const Offset offset);
 	bool findFunctionsByName(std::vector<Function *> &ret, const std::string& name,
-			NameType nameType = anyName, 
+			NameType nameType = anyName,
 			bool isRegex = false,
 			bool checkCase = true);
 
 	// Variable based methods
 	bool findVariableByOffset(Variable *&ret, const Offset offset);
 	bool findVariablesByName(std::vector<Variable *> &ret, const std::string& name,
-			NameType nameType = anyName, 
-			bool isRegex = false, 
+			NameType nameType = anyName,
+			bool isRegex = false,
 			bool checkCase = true);
    bool getAllVariables(std::vector<Variable *> &ret);
 
@@ -185,19 +185,19 @@ typedef Statement LineNoTuple;
 
    //  Super secret private methods that aren't really private
    typeCollection *getModuleTypesPrivate();
-   void setModuleTypes(typeCollection* tc) 
+   void setModuleTypes(typeCollection* tc)
    {
      typeInfo_ = tc;
    }
-   
+
    bool setLineInfo(Dyninst::SymtabAPI::LineInformation *lineInfo);
    private:
    Dyninst::SymtabAPI::LineInformation* lineInfo_;
    typeCollection* typeInfo_;
-   
 
-   std::string fileName_;                   // short file 
-   std::string fullName_;                   // full path to file 
+
+   std::string fileName_;                   // short file
+   std::string fullName_;                   // full path to file
    supportedLanguages language_;
    Offset addr_;                      // starting address of module
    Symtab *exec_;
