@@ -1,9 +1,5 @@
 # CMake configuration for dynElf (elf) directory
 
-if (NOT UNIX)
-  return()
-endif()
-
 include_directories (
   src
   h
@@ -20,7 +16,7 @@ set (SRC_LIST
   )
 endif()
 
-dyninst_library(dynElf ${LIBELF_LIBRARIES})
+dyninst_library(dynElf common ${LIBELF_LIBRARIES})
 
 add_definitions(-DDYNELF_LIB)
 if (USE_COTIRE)

@@ -1,3 +1,22 @@
+if ((NOT UNIX) AND ELF_ON_WINDOWS)
+  set(LIBELF_LIBRARIES ${ELF_DIRECTORY}/lib/libelf.lib)
+  set(LIBDWARF_LIBRARIES ${DWARF_DIRECTORY}/lib/dwarf.lib)
+
+  add_library(libelf_imp STATIC IMPORTED)
+  set_property(TARGET libelf_imp
+    PROPERTY IMPORTED_LOCATION ${LIBELF_LIBRARIES})
+
+  add_library(libdwarf_imp SHARED IMPORTED)
+  set_property(TARGET libdwarf_imp
+    PROPERTY IMPORTED_LOCATION ${LIBDWARF_LIBRARIES})
+
+  include_directories(
+   ${ELF_DIRECTORY}/include
+    ${ELF_DIRECTORY}/include/libelf
+    ${DWARF_DIRECTORY}/include/libdwarf
+  )
+endif()
+
 if (UNIX)
   find_package (LibElf)
   if(NOT LIBELF_FOUND)

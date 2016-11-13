@@ -28,19 +28,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
-#include <libgen.h>
 
 #include <boost/crc.hpp>
 #include <boost/assign/list_of.hpp>
 #include <boost/assign/std/set.hpp>
 #include <boost/assign/std/vector.hpp>
+#include <boost/filesystem/path.hpp>
 
 #include "common/src/headers.h"
+#include "common/src/MappedFile.h"
+
 #include "Elf_X.h"
 #include <iostream>
 #include <iomanip>
@@ -52,6 +52,8 @@ using boost::crc_32_type;
 using namespace boost::assign;
 
 using namespace Dyninst;
+
+namespace fs = boost::filesystem;
 
 #define DEBUGLINK_NAME ".gnu_debuglink"
 #define BUILD_ID_NAME ".note.gnu.build-id"
@@ -118,13 +120,13 @@ Elf_X *Elf_X::newElf_X(char *mem_image, size_t mem_size, string name)
 Elf_X::Elf_X()
     : elf(NULL), ehdr32(NULL), ehdr64(NULL), phdr32(NULL), phdr64(NULL),
       filedes(-1), is64(false), isArchive(false), ref_count(1),
-      cached_debug_buffer(NULL), cached_debug_size(0), cached_debug(false)
+      cached_debug_file(NULL), cached_debug(false)
 { }
 
 Elf_X::Elf_X(int input, Elf_Cmd cmd, Elf_X *ref)
     : elf(NULL), ehdr32(NULL), ehdr64(NULL), phdr32(NULL), phdr64(NULL),
       filedes(input), is64(false), isArchive(false), ref_count(1),
-      cached_debug_buffer(NULL), cached_debug_size(0), cached_debug(false)
+      cached_debug_file(NULL), cached_debug(false)
 {
     if (elf_version(EV_CURRENT) == EV_NONE) {
        return;
@@ -164,7 +166,7 @@ unsigned short Elf_X::e_endian() const {
 Elf_X::Elf_X(char *mem_image, size_t mem_size)
     : elf(NULL), ehdr32(NULL), ehdr64(NULL), phdr32(NULL), phdr64(NULL),
       filedes(-1), is64(false), isArchive(false), ref_count(1),
-      cached_debug_buffer(NULL), cached_debug_size(0), cached_debug(false)
+      cached_debug_file(NULL), cached_debug(false)
 {
     if (elf_version(EV_CURRENT) == EV_NONE) {
        return;
@@ -790,7 +792,7 @@ bool Elf_X_Shdr::next_data()
 {
     Elf_Data *nextData = elf_getdata(scn, data);
     if (nextData) data = nextData;
-    return nextData;
+    return nextData != NULL;
 }
 
 bool Elf_X_Shdr::isValid() const
@@ -948,7 +950,7 @@ Elf_X_Sym Elf_X_Data::get_sym()
 
 bool Elf_X_Data::isValid() const
 {
-    return data;
+    return data != NULL;
 }
 
 // ------------------------------------------------------------------------
@@ -1606,29 +1608,6 @@ bool Elf_X_Dyn::isValid() const
     return (dyn32 || dyn64);
 }
 
-static bool loadDebugFileFromDisk(string name, char* &output_buffer, unsigned long &output_buffer_size)
-{
-   struct stat fileStat;
-   int result = stat(name.c_str(), &fileStat);
-   if (result == -1)
-      return false;
-   if (S_ISDIR(fileStat.st_mode))
-      return false;
-   int fd = open(name.c_str(), O_RDONLY);
-   if (fd == -1)
-      return false;
-
-   char *buffer = (char *) mmap(NULL, fileStat.st_size, PROT_READ, MAP_SHARED, fd, 0);
-   close(fd);
-   if (!buffer)
-      return false;
-
-   output_buffer = buffer;
-   output_buffer_size = fileStat.st_size;
-
-   return true;
-}
-
 // The standard procedure to look for a separate debug information file
 // is as follows:
 // 1. Lookup build_id from .note.gnu.build-id section and debug-file-name and
@@ -1642,9 +1621,9 @@ static bool loadDebugFileFromDisk(string name, char* &output_buffer, unsigned lo
 bool Elf_X::findDebugFile(std::string origfilename, string &output_name, char* &output_buffer, unsigned long &output_buffer_size)
 {
    if (cached_debug) {
-      output_buffer = cached_debug_buffer;
-      output_buffer_size = cached_debug_size;
-      output_name = cached_debug_name;
+      output_buffer = (char*)cached_debug_file->base_addr();
+      output_buffer_size = cached_debug_file->size();
+      output_name = cached_debug_file->filename();
       return (output_buffer != NULL);
    }
    cached_debug = true;
@@ -1696,45 +1675,41 @@ bool Elf_X::findDebugFile(std::string origfilename, string &output_name, char* &
   }
 
   if (!debugFileFromBuildID.empty()) {
-     bool result = loadDebugFileFromDisk(debugFileFromBuildID, output_buffer, output_buffer_size);
-     if (result) {
-        output_name = debugFileFromBuildID;
-        cached_debug_buffer = output_buffer;
-        cached_debug_size = output_buffer_size;
-        cached_debug_name = output_name;
-        return true;
+     cached_debug_file = MappedFile::createMappedFile(debugFileFromBuildID);
+     if (cached_debug_file) {
+         output_buffer = (char*)cached_debug_file->base_addr();
+         output_buffer_size = cached_debug_file->size();
+         output_name = cached_debug_file->filename();
+         return true;
      }
   }
 
   if (debugFileFromDebugLink.empty())
      return false;
 
-  char *mfPathNameCopy = strdup(origfilename.c_str());
-  string objectFileDirName = dirname(mfPathNameCopy);
+  fs::path mfPath(origfilename);
+  string objectFileDirName = mfPath.parent_path().string();
 
   vector<string> fnames = list_of
     (objectFileDirName + "/" + debugFileFromDebugLink)
     (objectFileDirName + "/.debug/" + debugFileFromDebugLink)
     ("/usr/lib/debug/" + objectFileDirName + "/" + debugFileFromDebugLink);
 
-  free(mfPathNameCopy);
-
   for(unsigned i = 0; i < fnames.size(); i++) {
-     bool result = loadDebugFileFromDisk(fnames[i], output_buffer, output_buffer_size);
-     if (!result)
-        continue;
+     cached_debug_file = MappedFile::createMappedFile(fnames[i]);
+     if (!cached_debug_file)
+         continue;
     
     boost::crc_32_type crcComputer;
     crcComputer.process_bytes(output_buffer, output_buffer_size);
     if(crcComputer.checksum() != debugFileCrc) {
-       munmap(output_buffer, output_buffer_size);
+       MappedFile::closeMappedFile(cached_debug_file);
        continue;
     }
 
-    output_name = fnames[i];
-    cached_debug_buffer = output_buffer;
-    cached_debug_size = output_buffer_size;
-    cached_debug_name = output_name;
+    output_buffer = (char*)cached_debug_file->base_addr();
+    output_buffer_size = cached_debug_file->size();
+    output_name = cached_debug_file->filename();
     return true;
   }
 

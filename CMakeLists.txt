@@ -29,10 +29,14 @@ set (HEADER_DIRS common
     stackwalk
     symtabAPI
     )
-if(NOT ${PLATFORM} MATCHES nt)
+if((NOT ${PLATFORM} MATCHES nt) OR ELF_ON_WINDOWS)
   set (HEADER_DIRS ${HEADER_DIRS}
     dwarf
     elf
+    )
+endif()
+if(NOT ${PLATFORM} MATCHES nt)
+  set (HEADER_DIRS ${HEADER_DIRS}
     symlite
     )
 endif()
@@ -48,18 +52,20 @@ include_directories (
 set(Boost_USE_STATIC_LIBS OFF)
 # Component time
 add_subdirectory (common)
-if(NOT ${PLATFORM} MATCHES nt)
+if((NOT ${PLATFORM} MATCHES nt) OR ELF_ON_WINDOWS)
   add_subdirectory (elf)
   add_subdirectory (dwarf)
+endif()
+if(NOT ${PLATFORM} MATCHES nt)
   add_subdirectory (symlite)
   add_subdirectory (parseThat)
-# DynC is not compatible with Windows when
-# we use bison on linux to generate source
-# TODO: generate with bison configured for
-# MSVC?
-if(${SYMREADER} MATCHES symtabAPI)
-  add_subdirectory (dynC_API)
-endif()
+  # DynC is not compatible with Windows when
+  # we use bison on linux to generate source
+  # TODO: generate with bison configured for
+  # MSVC?
+  if(${SYMREADER} MATCHES symtabAPI)
+    add_subdirectory (dynC_API)
+  endif()
 endif()
 add_subdirectory (instructionAPI)
 add_subdirectory (symtabAPI)

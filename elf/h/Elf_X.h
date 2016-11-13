@@ -37,6 +37,8 @@
 #include <vector>
 #include "util.h"
 
+class MappedFile;
+
 namespace Dyninst {
 
 // Forward declarations
@@ -132,9 +134,7 @@ class DYNELF_EXPORT Elf_X {
     unsigned int ref_count;
     std::string filename;
 
-    char *cached_debug_buffer;
-    unsigned long cached_debug_size;
-    std::string cached_debug_name;
+    MappedFile *cached_debug_file;
     bool cached_debug;
 
     Elf_X();
