@@ -1,6 +1,8 @@
 if ((NOT UNIX) AND ELF_ON_WINDOWS)
   set(LIBELF_LIBRARIES ${ELF_DIRECTORY}/lib/libelf.lib)
   set(LIBDWARF_LIBRARIES ${DWARF_DIRECTORY}/lib/dwarf.lib)
+  set(IBERTY_LIBRARIES ${IBERTY_DIRECTORY}/lib/iberty.lib)
+  set(IBERTY_FOUND TRUE)
 
   add_library(libelf_imp STATIC IMPORTED)
   set_property(TARGET libelf_imp

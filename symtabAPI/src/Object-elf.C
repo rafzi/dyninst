@@ -2807,10 +2807,13 @@ Object::Object(MappedFile *mf_, bool, void (*err_func)(const char *),
 #endif
     is_aout_ = false;
 
+#if !defined(os_windows)
     if(mf->getFD() != -1) {
         elfHdr = Elf_X::newElf_X(mf->getFD(), ELF_C_READ, NULL, mf_->pathname());
     }
-    else {
+    else
+#endif
+    {
         elfHdr = Elf_X::newElf_X((char *)mf->base_addr(), mf->size(), mf_->pathname());
     }
 

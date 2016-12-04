@@ -22,7 +22,7 @@ set (SRC_LIST
     src/debugOstream.C 
     src/lprintf.C 
     src/pathName.C 
-    src/Time.C 
+    src/TimeStamp.C 
     src/fraction.C 
     src/timing.C 
     src/stats.C 

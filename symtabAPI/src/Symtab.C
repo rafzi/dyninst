@@ -1415,7 +1415,7 @@ bool Symtab::extractInfo(Object *linkedFile)
      * members are imprecise. These members should probably be deprecated in
      * favor of the getCodeRegions and getDataRegions functions.
      */
-#if defined(os_windows)
+#if defined(os_windows) && !defined(ELF_ON_WINDOWS)
 	preferedBase_ = linkedFile->getPreferedBase();
 #else
 	preferedBase_ = 0;
@@ -1423,7 +1423,7 @@ bool Symtab::extractInfo(Object *linkedFile)
     imageOffset_ = linkedFile->code_off();
     dataOffset_ = linkedFile->data_off();
 
-#if defined(os_windows)
+#if defined(os_windows) && !defined(ELF_ON_WINDOWS)
 	preferedBase_ = linkedFile->getPreferedBase();
 #else
 	preferedBase_ = 0;
@@ -2851,7 +2851,7 @@ SYMTAB_EXPORT Offset Symtab::getFreeOffset(unsigned size)
    }
 
    //   return highWaterMark;
-#if defined (os_windows)
+#if defined (os_windows) && !defined(ELF_ON_WINDOWS)
 	Object *obj = getObject();
 	if (!obj)
 	{
@@ -2868,7 +2868,7 @@ SYMTAB_EXPORT Offset Symtab::getFreeOffset(unsigned size)
 #else
 	unsigned pgSize = P_getpagesize();
 
-#if defined(os_linux)
+#if defined(os_linux) || defined(ELF_ON_WINDOWS)
         // Bluegene compute nodes have a 1MB alignment restructions on PT_LOAD section
 	Object *obj = getObject();
 	if (!obj)
@@ -3637,7 +3637,7 @@ SYMTAB_EXPORT bool Symtab::addLibraryPrereq(std::string name)
 
    string filename = name.substr(size+1);
 
-#if ! defined(os_windows) 
+#if ! defined(os_windows) || defined(ELF_ON_WINDOWS)
    obj->insertPrereqLibrary(filename);
 #else 
    // must add a symbol for an exported function belonging to the library 
@@ -3726,7 +3726,7 @@ SYMTAB_EXPORT bool Symtab::addExternalSymbolReference(Symbol *externalSym, Regio
 // symbol as we don on windows
 SYMTAB_EXPORT bool Symtab::addTrapHeader_win(Address ptr)
 {
-#if defined(os_windows)
+#if defined(os_windows) && !defined(ELF_ON_WINDOWS)
    getObject()->setTrapHeader(ptr);
    return true;
 #else

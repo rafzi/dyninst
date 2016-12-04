@@ -32,7 +32,7 @@
 
 #include "common/src/Timer.h"
 #include "common/src/timing.h"
-#include "common/src/Time.h"
+#include "common/src/TimeStamp.h"
 
 /* time retrieval function definitions */
 

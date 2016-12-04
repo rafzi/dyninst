@@ -32,7 +32,7 @@
 #define __TIMING_H
 
 #include "common/src/Types.h"  // for getCurrentTimeRaw()
-#include "common/src/Time.h"   // for getCurrentTime(), ...
+#include "common/src/TimeStamp.h"   // for getCurrentTime(), ...
 
 
 /* Function for general time retrieval.  Use in dyninst, front-end; don't use

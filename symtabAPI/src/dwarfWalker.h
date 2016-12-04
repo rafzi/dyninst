@@ -2,7 +2,12 @@
 #if !defined(_dwarf_walker_h_)
 #define _dwarf_walker_h_
 
+#if defined(ELF_ON_WINDOWS)
+typedef uint16_t Elf32_Section;
+typedef uint16_t Elf64_Section;
+#else
 #include "elf.h"
+#endif
 #include "libelf.h"
 #include "libdwarf.h"
 #include <stack>

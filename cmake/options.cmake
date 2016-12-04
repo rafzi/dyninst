@@ -23,4 +23,8 @@ if (SW_ANALYSIS_STEPPER)
 add_definitions (-DUSE_PARSE_API)
 endif()
 
+if (ELF_ON_WINDOWS)
+add_definitions (-DELF_ON_WINDOWS)
+endif()
+
 message(STATUS "Options set")

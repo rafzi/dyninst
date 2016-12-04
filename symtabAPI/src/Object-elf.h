@@ -49,7 +49,12 @@
 #include "MappedFile.h"
 #include "IntervalTree.h"
 
-#include <elf.h>
+#if defined(ELF_ON_WINDOWS)
+typedef uint16_t Elf32_Section;
+typedef uint16_t Elf64_Section;
+#else
+#include "elf.h"
+#endif
 #include <libelf.h>
 #include <string>
 
@@ -57,11 +62,11 @@
 
 #include <fcntl.h>
 #include <stdlib.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <set>
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
+//#include <sys/types.h>
+//#include <sys/mman.h>
+//#include <sys/stat.h>
 
 
 namespace Dyninst{

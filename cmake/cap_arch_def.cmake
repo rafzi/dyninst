@@ -155,6 +155,10 @@ message ("-- Enabling ThreadDB support")
 set (CAP_DEFINES ${CAP_DEFINES} -Dcap_thread_db)
 endif (THREAD_DB_FOUND)
 
+if (ELF_ON_WINDOWS)
+    set (CAP_DEFINES ${CAP_DEFINES} -Dcap_dwarf)
+endif ()
+
 set (UNIFIED_DEFINES ${CAP_DEFINES} ${BUG_DEFINES} ${ARCH_DEFINES} ${OS_DEFINES} ${OLD_DEFINES})
 
 foreach (def ${UNIFIED_DEFINES})

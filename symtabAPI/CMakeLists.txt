@@ -87,10 +87,19 @@ endif()
 
 if (PLATFORM MATCHES nt)
 set (SRC_LIST ${SRC_LIST}
-    src/Object-nt.C
-	src/emitWin.C
 	src/relocationEntry-stub.C
 )
+if(ELF_ON_WINDOWS)
+    include_directories(${PROJECT_SOURCE_DIR}/common/src)
+    SET(SRC_LIST ${SRC_LIST}
+        src/Object-elf.C
+    )
+else()
+    SET(SRC_LIST ${SRC_LIST}
+        src/Object-nt.C
+        src/emitWin.C
+    )
+endif()
 endif()
 
 SET_SOURCE_FILES_PROPERTIES(${SRC_LIST} PROPERTIES LANGUAGE CXX)
@@ -99,10 +108,11 @@ ADD_DEFINITIONS(-DSYMTAB_LIB)
 
 set (DEPS common)
 
-if(UNIX)
+if(UNIX OR ELF_ON_WINDOWS)
   set (DEPS ${DEPS}
     dynElf ${LIBELF_LIBRARIES}
     dynDwarf ${LIBDWARF_LIBRARIES}
+    ${IBERTY_LIBRARIES}
     )
 else()
   set (DEPS ${DEPS} dbghelp)

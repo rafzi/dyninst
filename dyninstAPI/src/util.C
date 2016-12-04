@@ -33,7 +33,7 @@
  */
 
 #include "common/src/headers.h"
-#include "common/src/Time.h"
+#include "common/src/TimeStamp.h"
 #include "dyninstAPI/src/util.h"
 #include "debug.h"
 
