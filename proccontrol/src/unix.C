@@ -40,7 +40,7 @@
 #include <sys/mman.h>
 
 #include <string>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #if defined(os_linux)
 #include "common/src/linuxKludges.h"
 #elif defined(os_freebsd)

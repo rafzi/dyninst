@@ -37,9 +37,9 @@
 #include <string>
 #include <map>
 #include <set>
-#include "common/src/Vector.h"
+#include "common/src/DyninstVector.h"
 #include <unordered_map>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "inst.h" // callWhen...
 
 #include "bitArray.h"

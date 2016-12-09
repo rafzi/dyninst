@@ -54,7 +54,7 @@
 #endif
 
 #include <string>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 class OS {
 public:

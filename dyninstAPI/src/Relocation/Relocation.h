@@ -35,7 +35,7 @@
 #if !defined(_RELOCATION_H_)
 #define _RELOCATION_H_
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include <list>
 #include <map>
 #include "dyninstAPI/src/codegen.h" // codeGen structure

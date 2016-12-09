@@ -40,9 +40,9 @@
 
 #include <stdio.h>
 #include <string>
-#include "common/src/Vector.h"
+#include "common/src/DyninstVector.h"
 #include <unordered_map>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #include "Point.h"
 

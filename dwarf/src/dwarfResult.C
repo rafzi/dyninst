@@ -34,7 +34,7 @@
 #include "ProcReader.h"
 #include "dyntypes.h"
 #include "dyn_regs.h"
-#include "Types.h"
+#include "DyninstTypes.h"
 #include "debug_common.h"
 #include <iostream>
 #include "debug_common.h"

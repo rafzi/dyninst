@@ -30,7 +30,7 @@
 
 #define INSIDE_INSTRUCTION_API
 // Needs to be the first include.
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #include <stdio.h>
 #include <string>

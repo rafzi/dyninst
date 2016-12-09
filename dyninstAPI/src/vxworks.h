@@ -42,8 +42,8 @@ class process;
 
 #include <sys/param.h>
 #include <pthread.h>
-#include "common/src/Types.h"
-#include "common/src/Vector.h"
+#include "common/src/DyninstTypes.h"
+#include "common/src/DyninstVector.h"
 
 #define BYTES_TO_SAVE   256
 #define EXIT_NAME "_exit"

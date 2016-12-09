@@ -35,7 +35,7 @@
 
 #include <assert.h>
 #include <stdio.h>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "dyninstAPI/src/codegen.h"
 #include "dyninstAPI/src/function.h"
 #include "dyninstAPI/src/emit-x86.h"

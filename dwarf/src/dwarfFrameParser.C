@@ -32,7 +32,7 @@
 #include "dwarfExprParser.h"
 #include "dwarfResult.h"
 #include "VariableLocation.h"
-#include "Types.h"
+#include "DyninstTypes.h"
 #include "libdwarf.h"
 #include <stdio.h>
 #include <iostream>

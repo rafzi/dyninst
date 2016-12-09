@@ -38,7 +38,7 @@
 // Note: Unless specified "book" refers to Intel's manual
 
 // This include *must* come first in the file.
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #include <assert.h>
 #include <stdio.h>

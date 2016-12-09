@@ -36,7 +36,7 @@
 #ifndef LINUX_AARCH64_HDR
 #define LINUX_AARCH64_HDR
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 // floor of inferior malloc address range within a single branch of x
 // for 32-bit ELF PowerPC mutatees

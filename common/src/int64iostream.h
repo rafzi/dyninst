@@ -40,7 +40,7 @@
 #define INT64IOSTREAM_H
 
 #include <iostream>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/src/std_namesp.h"
 
 #if (defined(os_windows) && _MSC_VER < 1300)

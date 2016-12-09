@@ -165,6 +165,6 @@ set (CONF_INCLUDE_DIRS "\${DYNINST_CMAKE_DIR}/${REL_INCLUDE_DIR}")
 # set default configuration type
 
 if (NOT CMAKE_BUILD_TYPE)
-   set (CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING 
+   set (CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
        "Choose the build type (None, Debug, Release, RelWithDebInfo, MinSizeRel)" FORCE)
 endif()

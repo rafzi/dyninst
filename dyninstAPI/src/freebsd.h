@@ -35,8 +35,8 @@
 #ifndef FREEBSD_PD_HDR
 #define FREEBSD_PD_HDR
 
-#include "common/src/Types.h"
-#include "common/src/Vector.h"
+#include "common/src/DyninstTypes.h"
+#include "common/src/DyninstVector.h"
 #include "common/src/freebsdKludges.h"
 #include "symtabAPI/h/Symtab.h"
 #include "symtabAPI/h/Archive.h"

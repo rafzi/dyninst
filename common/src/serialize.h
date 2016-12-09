@@ -61,7 +61,7 @@
 #include <libxml/xmlwriter.h>
 #endif
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/src/sha1.h"
 #include "common/src/pathName.h"
 

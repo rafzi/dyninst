@@ -40,8 +40,8 @@
 #ifndef SHMSEGMENT_H
 #define SHMSEGMENT_H
 
-#include "common/src/Types.h"
-#include "common/src/Vector.h"
+#include "common/src/DyninstTypes.h"
+#include "common/src/DyninstVector.h"
 
 class BPatch_process;
 

@@ -33,9 +33,9 @@
 #define PARREGION_H
 
 #include <string>
-#include "common/src/Vector.h"
-#include "common/src/Types.h"
-#include "common/src/Pair.h"
+#include "common/src/DyninstVector.h"
+#include "common/src/DyninstTypes.h"
+#include "common/src/DyninstPair.h"
 #include "codeRange.h"
 #include "common/src/arch.h" // instruction
 #include "dyninstAPI/h/BPatch_parRegion.h"

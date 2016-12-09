@@ -34,8 +34,8 @@
 #define FRAME_H
 
 #include "common/src/std_namesp.h"
-#include "common/src/Types.h"
-#include "common/src/Vector.h"
+#include "common/src/DyninstTypes.h"
+#include "common/src/DyninstVector.h"
 
 #include "instPoint.h"
 #include "baseTramp.h"

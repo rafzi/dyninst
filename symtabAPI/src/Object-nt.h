@@ -44,7 +44,7 @@
  * header files.
 ************************************************************************/
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include <vector>
 #include <string>
 #include <algorithm>

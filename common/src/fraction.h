@@ -32,7 +32,7 @@
 #ifndef __FRACTION_H
 #define __FRACTION_H
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/src/std_namesp.h"
 
 #if defined(os_windows)

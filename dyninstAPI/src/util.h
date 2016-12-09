@@ -40,7 +40,7 @@
 #include <string>
 #include "common/src/headers.h"
 #include "common/src/TimeStamp.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/src/stats.h"
 
 extern void printDyninstStats();

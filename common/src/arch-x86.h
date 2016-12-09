@@ -34,7 +34,7 @@
 #ifndef _ARCH_X86_H
 #define _ARCH_X86_H
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include <stdio.h>
 #include <common/src/Vector.h>
 #include <set>

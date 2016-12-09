@@ -36,10 +36,10 @@
 #include <string.h>
 #include <string>
 
-#include "common/src/Types.h"
-#include "common/src/Vector.h"
+#include "common/src/DyninstTypes.h"
+#include "common/src/DyninstVector.h"
 #include <unordered_map>
-#include "common/src/Pair.h"
+#include "common/src/DyninstPair.h"
 
 #include "BPatch_process.h"
 #include "BPatch_edge.h"

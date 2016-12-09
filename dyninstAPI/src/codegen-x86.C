@@ -35,7 +35,7 @@
 #include "boost/assign/std/set.hpp"
 #include <map>
 #include <string>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "codegen.h"
 #include "util.h"
 #include "debug.h"

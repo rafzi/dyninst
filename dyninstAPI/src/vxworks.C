@@ -70,7 +70,7 @@
 #include "common/src/wtxKludges.h"
 #include "dyninstAPI/src/os.h"
 #include "common/src/stats.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "dyninstAPI/src/debug.h"
 #include "dyninstAPI/src/util.h" // getCurrWallTime
 #include "common/src/pathName.h"

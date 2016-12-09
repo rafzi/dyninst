@@ -5,7 +5,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12.2)
 SET(LIBELF_DIR ${CMAKE_SOURCE_DIR}/../../libelf/lib/install)
 LINK_DIRECTORIES(${LIBELF_DIR}/lib)
 
-SET(SRC_DIR ../libdwarf)
+SET(SRC_DIR ${CMAKE_SOURCE_DIR}/../../libdwarf)
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
     ${SRC_DIR}/dwarf_abbrev.c

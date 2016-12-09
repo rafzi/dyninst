@@ -35,7 +35,7 @@
 #include "dyninstAPI/h/BPatch_process.h"
 #include "dyninstAPI/h/BPatch_point.h"
 #include <unordered_map>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/h/util.h"
 #include "util.h"
 

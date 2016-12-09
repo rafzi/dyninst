@@ -32,7 +32,7 @@
 #if !defined(_wtx_kludges_h)
 #define _wtx_kludges_h
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/h/dyntypes.h"
 
 #ifndef HOST
