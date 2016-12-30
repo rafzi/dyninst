@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -32,7 +32,7 @@
 #define __TIME_H
 
 #include <assert.h>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/src/fraction.h"
 
 /* These user classes that are defined:
@@ -87,7 +87,7 @@ class timeUnit {
    COMMON_EXPORT static const timeUnit &leapYear();
 
  public:
-  typedef enum { sparse, verbose } ostream_fmt; 
+  typedef enum { sparse, verbose } ostream_fmt;
    static ostream_fmt curFmt;
 
  private:
@@ -142,7 +142,7 @@ class timeBase {
  public:
   // ie. the year for the internal time base, if changed check to make
   // sure timeBase::b1970Help() is still accurate
-  enum { StdBaseMark = 2000 };  
+  enum { StdBaseMark = 2000 };
   COMMON_EXPORT static const timeBase &bStd();
   COMMON_EXPORT static const timeBase &b1970();
   // bNone is for times like process time, time is counted since the
@@ -151,7 +151,7 @@ class timeBase {
   COMMON_EXPORT static const timeBase &bNone();
 
  private:
-  int64_t ns2StdBaseMark;  
+  int64_t ns2StdBaseMark;
 
  public:
   //Paradyn default base: from nearest century turnover
@@ -238,7 +238,7 @@ class timeStamp : public timeParent {
   //    timeStamp myBirthDay = timeStamp::b1970() + 4*timeLength::year() +
   //                           2*timeStamp::leapYear() +
   //                           202*timeLength::day() + 8*timeLength::hour() +
-  //                           35*timeLength::min();  
+  //                           35*timeLength::min();
   COMMON_EXPORT timeStamp(int64_t iTime, const timeUnit &u, timeBase b);
   COMMON_EXPORT timeStamp(int iTime, const timeUnit &u, timeBase b);
   COMMON_EXPORT timeStamp(const timeLength &tl, timeBase b);
@@ -246,8 +246,8 @@ class timeStamp : public timeParent {
 
   // Selectors
   COMMON_EXPORT double getD(const timeUnit &u, timeBase b) const;
-  // eg. to get the number of seconds since 1970 do this: 
-  //        ts.getI(timeUnit::sec(), timeBase::b1970()) 
+  // eg. to get the number of seconds since 1970 do this:
+  //        ts.getI(timeUnit::sec(), timeBase::b1970())
   COMMON_EXPORT int64_t getI(const timeUnit &u, timeBase b) const;
 
   // ostream& put(ostream& s) const { return s << *this; }
@@ -488,4 +488,3 @@ COMMON_EXPORT relTimeStamp later(const relTimeStamp& a, const relTimeStamp& b);
 
 
 #endif
-

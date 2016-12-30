@@ -38,7 +38,7 @@
 #include "stackwalk/src/libstate.h"
 #include "stackwalk/src/sw.h"
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #include "common/h/SymReader.h"
 

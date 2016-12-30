@@ -40,7 +40,7 @@
 #include "response.h"
 #include "processplat.h"
 #include "int_event.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include <stdlib.h>
 #include <map>
 #include <algorithm>

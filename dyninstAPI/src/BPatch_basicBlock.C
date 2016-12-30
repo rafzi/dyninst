@@ -35,7 +35,7 @@
 #include <boost/bind.hpp>
 
 #include "util.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #include "BPatch_flowGraph.h"
 #include "BPatch_collections.h"

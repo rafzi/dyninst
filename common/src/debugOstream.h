@@ -35,7 +35,7 @@
 #define _DEBUG_OSTREAM_H_
 
 #include "common/src/std_namesp.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #ifdef NEW_TIME_TYPES
 class timeUnit;

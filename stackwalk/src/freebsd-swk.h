@@ -31,7 +31,7 @@
 #ifndef FREEBSD_SWK_H
 #define FREEBSD_SWK_H
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/src/freebsdKludges.h"
 
 #define START_THREAD_FUNC_NAME "thread_start"

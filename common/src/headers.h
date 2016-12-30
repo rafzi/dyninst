@@ -1,28 +1,28 @@
 /*
  * See the dyninst/COPYRIGHT file for copyright information.
- * 
+ *
  * We provide the Paradyn Tools (below described as "Paradyn")
  * on an AS IS basis, and do not warrant its validity or performance.
  * We reserve the right to update, modify, or discontinue this
  * software at any time.  We shall have no obligation to supply such
  * updates or modifications or any other form of support to you.
- * 
+ *
  * By your use of Paradyn, you understand and agree that we (or any
  * other person or entity with proprietary rights in Paradyn) are
  * under no obligation to provide either maintenance services,
  * update services, notices of latent defects, or correction of
  * defects for Paradyn.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -50,7 +50,7 @@ typedef int (*xdr_wr_func)(void *, char *, int);
 }
 
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #if defined(os_linux) || defined(os_bgp) || defined(os_bg_ion) || defined(os_bgq_ion)
 #include "common/src/linuxHeaders.h"
@@ -142,7 +142,7 @@ try_again:
    bytes_read = read(fd, (char *)&it, sz);
 
    if ( (ssize_t)-1 == bytes_read ) {
-      if (errno == EAGAIN || errno == EINTR) 
+      if (errno == EAGAIN || errno == EINTR)
          goto try_again;
 
       fprintf(stderr, "%s[%d]:  read failed: %s:%d\n", FILE__, __LINE__,
@@ -156,7 +156,7 @@ try_again:
       return RRVnoData;
    }
    if (bytes_read != sz) {
-      //bperr("%s[%d]:  read wrong number of bytes! %d, not %d\n", 
+      //bperr("%s[%d]:  read wrong number of bytes! %d, not %d\n",
       //      FILE__, __LINE__, bytes_read, sz);
       //bperr("FIXME:  Need better logic to handle incomplete reads\n");
       return RRVinsufficientData;

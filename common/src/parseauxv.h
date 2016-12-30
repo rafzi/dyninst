@@ -31,7 +31,7 @@
 #ifndef auxvparser_h
 #define auxvparser_h
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include <map>
 
 class COMMON_EXPORT AuxvParser

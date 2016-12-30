@@ -32,9 +32,9 @@
  * inst-x86.C - x86 dependent functions and code generator
  */
 
-#include "common/src/Vector.h"
+#include "common/src/DyninstVector.h"
 #include <unordered_map>
-#include "common/src/Vector.h"
+#include "common/src/DyninstVector.h"
 #include "parse-cfg.h"
 #include "instPoint.h"
 #include "mapped_object.h"

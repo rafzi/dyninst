@@ -45,7 +45,7 @@
 
 #include <vector>
 #include "headers.h"
-#include "Types.h"
+#include "DyninstTypes.h"
 #include "MappedFile.h"
 #include "IntervalTree.h"
 

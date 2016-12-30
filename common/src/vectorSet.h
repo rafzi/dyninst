@@ -48,7 +48,7 @@
 #endif
 
 
-#include "common/src/Vector.h"
+#include "common/src/DyninstVector.h"
 
 template <class T>
 class DLLEXPORT vectorSet {

@@ -27,7 +27,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "Point.h"
 #include "PatchMgr.h"
 #include "PatchObject.h"

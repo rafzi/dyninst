@@ -34,8 +34,8 @@
 #include <stdarg.h>
 #include <assert.h>
 #include <string>
-#include "common/src/Pair.h"
-#include "common/src/Vector.h"
+#include "common/src/DyninstPair.h"
+#include "common/src/DyninstVector.h"
 #include "util.h"
 #include "BPatch.h"
 #include "dyninstAPI/src/debug.h"

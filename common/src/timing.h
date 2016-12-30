@@ -31,7 +31,7 @@
 #ifndef __TIMING_H
 #define __TIMING_H
 
-#include "common/src/Types.h"  // for getCurrentTimeRaw()
+#include "common/src/DyninstTypes.h"  // for getCurrentTimeRaw()
 #include "common/src/TimeStamp.h"   // for getCurrentTime(), ...
 
 

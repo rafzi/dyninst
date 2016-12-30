@@ -34,7 +34,7 @@
 #include "common/h/dyntypes.h"
 #include "common/h/Annotatable.h"
 #include "common/src/serialize.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/src/headers.h"
 
 #if defined(SERIALIZATION_DISABLED)

@@ -39,7 +39,7 @@
 #include "stackwalk/src/libstate.h"
 #include "common/h/dyntypes.h"
 #include "common/h/VariableLocation.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "dwarfFrameParser.h"
 #include "dwarfHandle.h"
 

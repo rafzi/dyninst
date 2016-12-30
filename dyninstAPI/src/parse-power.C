@@ -35,9 +35,9 @@
 // classified
 //
 
-#include "common/src/Vector.h"
+#include "common/src/DyninstVector.h"
 #include <unordered_map>
-#include "common/src/Vector.h"
+#include "common/src/DyninstVector.h"
 #include "parse-cfg.h"
 #include "instPoint.h"
 #include "image.h"

@@ -25,6 +25,8 @@ endif()
 
 if (ELF_ON_WINDOWS)
 add_definitions (-DELF_ON_WINDOWS)
+add_definitions (-D__USE_MINGW_ANSI_STDIO=1)
+add_definitions (-D_POSIX=1)
 endif()
 
 message(STATUS "Options set")

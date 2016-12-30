@@ -36,7 +36,7 @@
 #include "debug_common.h"
 #include "VariableLocation.h"
 #include "ProcReader.h"
-#include "Types.h"
+#include "DyninstTypes.h"
 
 using namespace std;
 

@@ -38,8 +38,8 @@
 #endif
 
 #define BPATCH_FILE
-#include "common/src/Pair.h"
-#include "common/src/Vector.h"
+#include "common/src/DyninstPair.h"
+#include "common/src/DyninstVector.h"
 #include "common/src/stats.h"
 #include "BPatch.h"
 #include "BPatch_libInfo.h"

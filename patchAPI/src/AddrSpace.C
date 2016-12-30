@@ -29,7 +29,7 @@
  */
 /* Public Interface */
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "AddrSpace.h"
 #include "PatchObject.h"
 #include "PatchMgr.h"

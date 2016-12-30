@@ -28,7 +28,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/src/arch-aarch64.h"
 
 #if defined(os_vxworks)

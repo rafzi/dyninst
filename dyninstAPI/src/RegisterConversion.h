@@ -32,7 +32,7 @@
 #define REGISTER_CONVERSION_H
 
 #include "Register.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "common/h/dyn_regs.h"
 #include <map>
 

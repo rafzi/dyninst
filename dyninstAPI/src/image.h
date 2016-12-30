@@ -52,10 +52,10 @@
 #include "dyninstAPI/src/inst.h"
 #include "dyninstAPI/h/BPatch_enums.h"
 
-#include "common/src/Vector.h"
+#include "common/src/DyninstVector.h"
 #include <unordered_map>
 #include "common/src/List.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #if defined(os_linux)||defined(os_freebsd)
 #include "symtabAPI/h/Archive.h"

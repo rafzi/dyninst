@@ -40,7 +40,7 @@
 #include "stackwalk/src/dbgstepper-impl.h"
 #include "stackwalk/src/x86-swk.h"
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 #include <sys/user.h>
 #include <sys/ptrace.h>

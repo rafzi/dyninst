@@ -55,7 +55,7 @@
 
 #include <stdio.h>
 #include "dyninstRTExport.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 
 /* If we must make up a boolean type, we should make it unique */
 typedef unsigned char RT_Boolean;

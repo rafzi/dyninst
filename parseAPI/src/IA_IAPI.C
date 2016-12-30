@@ -39,7 +39,7 @@
 #include "debug_parse.h"
 #include "IA_platformDetails.h"
 #include "util.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "dyntypes.h"
 
 #include <deque>

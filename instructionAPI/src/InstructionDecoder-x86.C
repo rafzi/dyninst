@@ -30,7 +30,7 @@
 
 #define INSIDE_INSTRUCTION_API
 
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "InstructionDecoder-x86.h"
 #include "Expression.h"
 #include "common/src/arch-x86.h"

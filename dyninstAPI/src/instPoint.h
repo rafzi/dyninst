@@ -35,7 +35,7 @@
 #define _INST_POINT_H_
 
 #include <stdlib.h>
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "dyninstAPI/src/inst.h"
 #include "common/src/arch.h" // instruction
 #include "dyninstAPI/src/codeRange.h"

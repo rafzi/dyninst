@@ -38,8 +38,8 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <vector>
-#include "common/src/Types.h"
-#include "common/src/Vector.h"
+#include "common/src/DyninstTypes.h"
+#include "common/src/DyninstVector.h"
 #include "common/src/std_namesp.h"
 
 /** template class for addrRangeTree. The implementation is based on red black

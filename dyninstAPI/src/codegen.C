@@ -37,7 +37,7 @@
 #include "addressSpace.h"
 #include "dynThread.h"
 #include "dynProcess.h"
-#include "common/src/Types.h"
+#include "common/src/DyninstTypes.h"
 #include "codegen.h"
 #include "util.h"
 #include "function.h"
