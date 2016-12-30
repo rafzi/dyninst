@@ -84,7 +84,7 @@ bool Object::truncateLineFilenames = false;
 
 string symt_current_func_name;
 string symt_current_mangled_func_name;
-Symbol *symt_current_func = NULL;
+Function *symt_current_func = NULL;
 
 std::vector<Symbol *> opdsymbols_;
 

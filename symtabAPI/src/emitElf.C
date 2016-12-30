@@ -35,6 +35,11 @@
 #include "common/src/pathName.h"
 
 
+#if defined(ELF_ON_WINDOWS)
+#include "elf-win.h"
+#endif
+
+
 #if defined(os_freebsd)
 #include "common/src/freebsdKludges.h"
 #endif
@@ -497,6 +502,11 @@ bool emitElf<ElfTypes>::driver(std::string fName) {
     rewrite_printf("::driver for emitElf\n");
 
     string strtmpl = fName + "XXXXXX";
+
+#if defined(ELF_ON_WINDOWS)
+// Not implemented. Introduce boost filesystem dependency?
+// auto filename = fs::temp_directory_path() / fs::unique_path();
+#else
     char buf[strtmpl.length() + 1];
     strncpy(buf, strtmpl.c_str(), strtmpl.length() + 1);
 
@@ -510,6 +520,7 @@ bool emitElf<ElfTypes>::driver(std::string fName) {
 
     fchmod(newfd, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP);
     rewrite_printf("Emitting to temporary file %s\n", buf);
+#endif
 
 #if 0
     //open ELF File for writing

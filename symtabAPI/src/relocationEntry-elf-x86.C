@@ -32,7 +32,11 @@
 #include "Symtab.h"
 #include "Serialization.h"
 #include "annotations.h"
-#include <elf.h>
+#if defined(ELF_ON_WINDOWS)
+#include "elf-win.h"
+#else
+#include "elf.h"
+#endif
 
 #if defined(os_freebsd)
 #define R_X86_64_JUMP_SLOT R_X86_64_JMP_SLOT

@@ -37,16 +37,17 @@ set (SRC_LIST
 if (PLATFORM MATCHES freebsd OR 
     PLATFORM MATCHES linux OR 
     PLATFORM MATCHES bgq OR
-    PLATFORM MATCHES cnl)
+    PLATFORM MATCHES cnl OR
+    ELF_ON_WINDOWS)
 
 set (SRC_LIST ${SRC_LIST}
     src/Object-elf.C 
     src/Archive.C 
     src/Archive-elf.C 
     src/parseDwarf.C
-        src/parseStab.C
-        src/LinkMap.C
-        src/emitElf.C
+    src/parseStab.C
+    src/LinkMap.C
+    src/emitElf.C
     src/emitElfStatic.C
     src/dwarfWalker.C
 )
@@ -85,19 +86,19 @@ endif()
 endif()
 
 
+set (DEPS common)
+
+
 if (PLATFORM MATCHES nt)
-set (SRC_LIST ${SRC_LIST}
-	src/relocationEntry-stub.C
-)
 if(ELF_ON_WINDOWS)
+    add_subdirectory(libiberty_demangle)
+    set(DEPS ${DEPS} libiberty_demangle)
     include_directories(${PROJECT_SOURCE_DIR}/common/src)
-    SET(SRC_LIST ${SRC_LIST}
-        src/Object-elf.C
-    )
 else()
     SET(SRC_LIST ${SRC_LIST}
         src/Object-nt.C
         src/emitWin.C
+        src/relocationEntry-stub.C
     )
 endif()
 endif()
@@ -105,8 +106,6 @@ endif()
 SET_SOURCE_FILES_PROPERTIES(${SRC_LIST} PROPERTIES LANGUAGE CXX)
 
 ADD_DEFINITIONS(-DSYMTAB_LIB)
-
-set (DEPS common)
 
 if(UNIX OR ELF_ON_WINDOWS)
   set (DEPS ${DEPS}

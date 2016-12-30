@@ -49,6 +49,10 @@
 #include "Region.h"
 #include "debug.h"
 
+#if defined(ELF_ON_WINDOWS)
+#include "elf-win.h"
+#endif
+
 using namespace Dyninst;
 using namespace Dyninst::SymtabAPI;
 

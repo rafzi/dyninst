@@ -1286,7 +1286,7 @@ Symtab::Symtab(std::string filename, bool defensive_bin, bool &err) :
    
    create_printf("%s[%d]: created symtab for %s\n", FILE__, __LINE__, filename.c_str());
 
-#if defined (os_windows)
+#if defined (os_windows) && !defined(ELF_ON_WINDOWS)
    extern void fixup_filename(std::string &);
    fixup_filename(filename);
 #endif

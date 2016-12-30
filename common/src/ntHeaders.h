@@ -154,6 +154,7 @@ inline int P_getpagesize() {
     page_size = info.dwPageSize;
     return page_size;
 }
+inline int getpagesize() { return P_getpagesize(); }
 
 inline int P_strcmp (const char *S1, const char *S2) {
   return (strcmp(S1, S2));}
@@ -215,11 +216,63 @@ inline int P_mkdir(const char *pathname, int) {
 inline int P_unlink(const char *pathname) {
 	return _unlink(pathname);
 }
+#if defined(ELF_ON_WINDOWS)
+extern "C" char *cplus_demangle(const char *, int);
+extern void dedemangle(char * demangled, char * dedemangled);
+#define DMGL_PARAMS	 (1 << 0)	/* Include function args */
+#define DMGL_ANSI	 (1 << 1)	/* Include const, volatile, etc */
+#define DMGL_ARM	 (1 << 11)
+/* We can't export this, it's inline. */
+inline char * P_cplus_demangle(const char * symbol, bool nativeCompiler, bool includeTypes = false) {
+    static char* last_symbol = NULL;
+    static bool last_native = false;
+    static bool last_typed = false;
+    static char* last_demangled = NULL;
+
+    if (last_symbol && last_demangled && (nativeCompiler == last_native)
+        && (includeTypes == last_typed) && (strcmp(symbol, last_symbol) == 0))
+    {
+        return strdup(last_demangled);
+    }
+
+    int opts = 0;
+    opts |= includeTypes ? DMGL_PARAMS | DMGL_ANSI : 0;
+    //   [ pgcc/CC are the "native" compilers on Linux. Go figure. ]
+    // pgCC's mangling scheme most closely resembles that of the Annotated
+    // C++ Reference Manual, only with "some exceptions" (to quote the PGI
+    // documentation). I guess we'll demangle names with "some exceptions".
+    opts |= nativeCompiler ? DMGL_ARM : 0;
+    char * demangled = cplus_demangle(const_cast< char *>(symbol), opts);
+
+    if (demangled == NULL) { return NULL; }
+
+    if (!includeTypes) {
+        /* de-demangling never increases the length */
+        char * dedemangled = strdup(demangled);
+        assert(dedemangled != NULL);
+        dedemangle(demangled, dedemangled);
+        assert(dedemangled != NULL);
+
+        free(demangled);
+        demangled = dedemangled;
+    }
+
+    free(last_symbol);
+    free(last_demangled);
+    last_native = nativeCompiler;
+    last_typed = includeTypes;
+    last_symbol = strdup(symbol);
+    last_demangled = strdup(demangled);
+
+    return demangled;
+}
+#else
 extern char *cplus_demangle(char *, int, bool );
 /* We can't export this, it's inline. */
 inline char * P_cplus_demangle( const char * symbol, bool /* nativeCompiler */, bool includeTypes = false ) {
    return cplus_demangle( (char *)symbol, 0, includeTypes );
-   }
+}
+#endif
 
 #ifndef BPATCH_LIBRARY
 #if defined(PARADYND)

@@ -50,6 +50,9 @@
 #include "debug.h"
 #include "Object-elf.h"
 
+#if defined(ELF_ON_WINDOWS)
+#include "elf-win.h"
+#endif
 #if defined(os_freebsd)
 #define R_X86_64_JUMP_SLOT R_X86_64_JMP_SLOT
 #endif

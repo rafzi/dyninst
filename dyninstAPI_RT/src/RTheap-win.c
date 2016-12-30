@@ -37,17 +37,6 @@ int	DYNINSTheap_align = 16;
 Address DYNINSTheap_loAddr = 0x400000;    //4MB mark
 Address DYNINSTheap_hiAddr = 0x7FFFFFFF;  //2GB mark
 
-int getpagesize() {
-    SYSTEM_INFO info;
-    static int page_size = 0;
-    if (page_size)
-        return page_size;
-    GetSystemInfo(&info);
-    page_size = info.dwPageSize;
-    return page_size;
-}
-
-
 
 void *map_region(void *addr, int len, int fd) {
     void *result;

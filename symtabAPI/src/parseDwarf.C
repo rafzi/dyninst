@@ -29,7 +29,12 @@
  */
 #include <map>
 
+#if defined(ELF_ON_WINDOWS)
+#include "elf-win.h"
+#else
 #include "elf.h"
+#endif
+
 #include "libelf.h"
 #include "dwarf.h"
 #include "libdwarf.h"

@@ -28,7 +28,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#if !defined(os_windows)
 #include <ar.h>
+#else
+struct ar_hdr {
+    char    ar_name[16];
+    char    ar_date[12];
+    char    ar_uid[6];
+    char    ar_gid[6];
+    char    ar_mode[8];
+    char    ar_size[10];
+    char    ar_fmag[2];
+};
+#endif
 
 #include "symtabAPI/h/Symtab.h"
 #include "symtabAPI/h/Archive.h"
@@ -52,7 +64,11 @@ Archive::Archive(std::string& filename, bool& err)
 
     Elf_Cmd cmd = ELF_C_READ;
     Elf_Arhdr *archdr;
+#if !defined(os_windows)
     Elf_X *arf = Elf_X::newElf_X(mf->getFD(), cmd, NULL, filename);
+#else
+    Elf_X *arf = Elf_X::newElf_X((char *)mf->base_addr(), mf->size(), mf->pathname());
+#endif
     if (elf_kind(arf->e_elfp()) != ELF_K_AR) {
         /* Don't close mf, because this file will most
          * likely be opened again as a normal Symtab
@@ -64,7 +80,12 @@ Archive::Archive(std::string& filename, bool& err)
     }
 
     basePtr = (void *) arf;
+#if !defined(os_windows)
     Elf_X *newelf = Elf_X::newElf_X(mf->getFD(), cmd, arf);
+#else
+    // Not implemented!
+    Elf_X *newelf = nullptr;
+#endif
 
     while( newelf->e_elfp() ) {
 	archdr = elf_getarhdr(newelf->e_elfp());
